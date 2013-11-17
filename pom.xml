@@ -40,7 +40,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>example.TextAdventure.App</mainClass>
+							<mainClass>lambdacaverns.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
