@@ -1,5 +1,8 @@
 package lambdacaverns;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.googlecode.lanterna.terminal.*;
 import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.input.Key;
@@ -9,11 +12,24 @@ import com.googlecode.lanterna.terminal.swing.SwingTerminal;
 import lambdacaverns.ui.UserInterface;
 import lambdacaverns.world.MapGen;
 import lambdacaverns.world.World;
+import lambdacaverns.common.Actions;
 
 /**
  * Caverns of Lambda Application
  */
 public class App {
+    private Map<Character, Actions> actionMap = new HashMap<Character, Actions>();
+    
+    public App() {
+        initActionMap();
+    }
+    
+    private void initActionMap() {
+        actionMap.put('u', Actions.MOVE_UP);
+        actionMap.put('d', Actions.MOVE_DOWN);
+        actionMap.put('l', Actions.MOVE_LEFT);
+        actionMap.put('r', Actions.MOVE_RIGHT);
+    }
     
     /**
      * Displays a welcome page.
@@ -45,7 +61,7 @@ public class App {
      */
     private static World createWorld() {
         World w = new World();
-        w.init(MapGen.generate(200, 200));
+        w.init(MapGen.generate(Constants.MAP_HEIGHT, Constants.MAP_WIDTH));
         w.getMessages().add("Welcome to " + Constants.GAME_TITLE);
 
         return w;
@@ -56,7 +72,7 @@ public class App {
      * @param w the world
      * @param s the screen to draw on
      */
-    private static void gameLoop(World w, Screen s) {
+    private void gameLoop(World w, Screen s) {
         UserInterface ui = new UserInterface(s);
         ui.draw(w);
 
@@ -66,7 +82,7 @@ public class App {
             if (c == 'q')
                 break;
 
-            w.tick();
+            w.tick(actionMap.get(c));
             ui.draw(w);
         }
     }
@@ -87,12 +103,8 @@ public class App {
         }
         return k;
     }
-
-    /**
-     * Main - It all starts here!
-     * @param args command line arguments
-     */
-    public static void main(String[] args) {
+    
+    void run() {
         // Initialise
         Screen s = TerminalFacade.createScreen(new SwingTerminal(
                 Constants.SCREEN_NCOLS, Constants.SCREEN_NROWS));
@@ -106,5 +118,14 @@ public class App {
         
         // Cleanup
         s.stopScreen();
+    }
+
+    /**
+     * Main - It all starts here!
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
+        App a = new App();
+        a.run();
     }
 }

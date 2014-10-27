@@ -3,6 +3,7 @@ package lambdacaverns.world;
 import java.util.Vector;
 
 import lambdacaverns.common.Glyphs;
+import lambdacaverns.common.Position;
 
 /**
  * Encapsulates the map. This is just a matrix of Tile objects.
@@ -43,6 +44,16 @@ public class Map {
     public void setTile(int row, int col, Tile t) {
         checkPosition(row, col);
         data.set(((row * _ncols) + col), t);
+    }
+    
+    public Boolean withinMap(Position pos) {
+        if (pos.row() < 0 || pos.row() > _nrows - 1
+                || pos.col() < 0 || pos.col() > _ncols - 1) {
+            return false;
+        
+        } else {
+            return true;
+        }
     }
 
     /**

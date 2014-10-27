@@ -24,6 +24,10 @@ public class Avatar {
         this.position = pos;
     }
     
+    public void setPosition(int row, int col) {
+        this.position = new Position(row, col);
+    }
+    
     /**
      * @return the health
      */

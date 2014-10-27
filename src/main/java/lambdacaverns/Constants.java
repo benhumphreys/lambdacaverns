@@ -10,6 +10,16 @@ public class Constants {
     public static final String GAME_TITLE = "Caverns of Lambda";
     
     /*********************************************************************
+     *  MAP
+     ********************************************************************/
+    
+    /** Map Width (in text columns) */
+    public static final int MAP_WIDTH = 200;
+     
+     /** Map hight (in text rows) */
+     public static final int MAP_HEIGHT = 200;
+    
+    /*********************************************************************
      *  DIMENSIONS
      ********************************************************************/
     
