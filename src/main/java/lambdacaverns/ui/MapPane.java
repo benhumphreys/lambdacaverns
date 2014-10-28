@@ -1,3 +1,22 @@
+/*
+ * Caverns of Lambda - A Rogue-like
+ * Copyright (C) 2014  Ben Humphreys
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
 package lambdacaverns.ui;
 
 import com.googlecode.lanterna.screen.Screen;
@@ -6,10 +25,10 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import lambdacaverns.common.Glyphs;
 import lambdacaverns.common.Position;
-import lambdacaverns.world.Avatar;
-import lambdacaverns.world.Map;
-import lambdacaverns.world.Tile;
 import lambdacaverns.world.World;
+import lambdacaverns.world.entities.Player;
+import lambdacaverns.world.map.Map;
+import lambdacaverns.world.map.Tile;
 
 /**
  * The screen pane that displays the Map.
@@ -36,7 +55,7 @@ public class MapPane extends Pane {
     @Override
     void draw(World w) {
         drawBorders();
-        drawMap(w.getMap(), w.getAvatar());
+        drawMap(w.getMap(), w.getPlayer());
     }
     
     private void drawBorders() {
@@ -67,7 +86,7 @@ public class MapPane extends Pane {
         }
     }
 
-    private void drawMap(Map m, Avatar a) {
+    private void drawMap(Map m, Player a) {
         // Calculate the map position which will align with the top-left-corner
         // of the pane. This depends on the player position, try to keep the
         // player in the centre, however as the player approaches the edge of
@@ -95,7 +114,7 @@ public class MapPane extends Pane {
                         && a.getPosition().col() == mapTlcCol + col) {
                     screen().putString(firstScreenCol + col,
                             firstScreenRow + row,
-                            Character.toString(Glyphs.AVATAR),
+                            Character.toString(Glyphs.PLAYER),
                             Terminal.Color.YELLOW,
                             Terminal.Color.BLACK,
                             ScreenCharacterStyle.Bold);

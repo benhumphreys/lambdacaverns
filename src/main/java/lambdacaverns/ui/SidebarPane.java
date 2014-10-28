@@ -1,3 +1,22 @@
+/*
+ * Caverns of Lambda - A Rogue-like
+ * Copyright (C) 2014  Ben Humphreys
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
 package lambdacaverns.ui;
 
 import com.googlecode.lanterna.screen.Screen;
@@ -8,7 +27,7 @@ import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
 
 /**
- * The screen pane that displays the sidebar. The sidebar displays avatar
+ * The screen pane that displays the sidebar. The sidebar displays players
  * stats, a list of key bindings, and a legend for the map.
  */
 public class SidebarPane extends Pane {
@@ -24,19 +43,19 @@ public class SidebarPane extends Pane {
         int col = corner().col();
         
         // Stats
-        String health = "Health: " + w.getAvatar().getHealth()
-                + "/" + w.getAvatar().getMaxHealth();
+        String health = "Health: " + w.getPlayer().getHealth()
+                + "/" + w.getPlayer().getMaxHealth();
         
         screen().putString(col, row, health, Terminal.Color.WHITE,
                 Terminal.Color.BLACK);
         row++;
         
-        screen().putString(col, row, "Gold:   " + w.getAvatar().getGold(),
+        screen().putString(col, row, "Gold:   " + w.getPlayer().getGold(),
                 Terminal.Color.WHITE,
                 Terminal.Color.BLACK);
         row++;
         
-        screen().putString(col, row, "Armour: " + w.getAvatar().getArmour(),
+        screen().putString(col, row, "Armour: " + w.getPlayer().getArmour(),
                 Terminal.Color.WHITE,
                 Terminal.Color.BLACK);
         
@@ -46,7 +65,7 @@ public class SidebarPane extends Pane {
                 Terminal.Color.BLACK);
         row++;
         
-        screen().putString(col, row, Glyphs.AVATAR + " - Avatar", Terminal.Color.YELLOW,
+        screen().putString(col, row, Glyphs.PLAYER + " - Player", Terminal.Color.YELLOW,
                 Terminal.Color.BLACK);
         row++;
         screen().putString(col, row, Glyphs.WALL + " - Wall", Terminal.Color.WHITE,

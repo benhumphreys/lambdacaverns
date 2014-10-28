@@ -17,16 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-package lambdacaverns.common;
+package lambdacaverns.world.map;
+
+import lambdacaverns.common.Glyphs;
 
 /**
- * Glyph constants
+ * A map tile.
  */
-public class Glyphs {
-    public static final char OPEN = '.';
-    public static final char WALL = '#';
-    public static final char WATER = '~';
-    public static final char PLAYER = '@';
-    public static final char TREE = '^';
-    public static final char ORC = 'O';
+public class Tile {
+    char glyph;
+    
+    public Tile() {
+        this.glyph = Glyphs.OPEN;
+    }
+    
+    public Tile(char glyph) {
+        this.glyph = glyph;
+    }
+    
+    public char getGlyph() {
+        return glyph;
+    }
+    
+    public void setGlyph(char g) {
+        this.glyph = g;
+    }
 }

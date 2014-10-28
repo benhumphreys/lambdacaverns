@@ -17,16 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-package lambdacaverns.common;
+package lambdacaverns.world.entities;
 
-/**
- * Glyph constants
- */
-public class Glyphs {
-    public static final char OPEN = '.';
-    public static final char WALL = '#';
-    public static final char WATER = '~';
-    public static final char PLAYER = '@';
-    public static final char TREE = '^';
-    public static final char ORC = 'O';
+import lambdacaverns.common.Position;
+
+public interface IEntity {
+    
+    /**
+     * Sets the location of the entity to the position specified.
+     * @param pos   the new location for the entity.
+     */
+    public void setPosition(Position pos);
+    
+    /**
+     * @return the current location of the entity.
+     */
+    public Position getPosition();
 }
