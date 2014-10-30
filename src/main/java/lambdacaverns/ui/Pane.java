@@ -30,7 +30,7 @@ import lambdacaverns.world.World;
  * for the top-left-corner of the pane).
  */
 public abstract class Pane {
-    Screen _screen;
+    private Screen _screen;
     private int _height = 0;
     private int _width = 0;
     private Position _corner;

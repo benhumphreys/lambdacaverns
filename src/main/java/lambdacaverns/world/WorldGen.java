@@ -22,9 +22,8 @@ package lambdacaverns.world;
 import java.util.Random;
 
 import lambdacaverns.Constants;
-import lambdacaverns.common.Glyphs;
 import lambdacaverns.common.Position;
-import lambdacaverns.world.entities.Player;
+import lambdacaverns.world.entities.Orc;
 import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.MapGen;
 
@@ -36,30 +35,37 @@ public class WorldGen {
      * @return an initialised world.
      */
     public static World generate() {
-        World w = new World();
         Map m = MapGen.generate(Constants.MAP_HEIGHT, Constants.MAP_WIDTH);
+        World w = new World(m);
         
         // Find an open map position for the player to start
-        Position pos = findOpenPosition(m);
+        Position pos = findOpenPosition(w);
+        w.getPlayer().setPosition(pos);
         
-        w.init(m, new Player(pos));
+        spawnOrcs(w);
         return w;
     }
     
     // Find a random open position on the map
-    private static Position findOpenPosition(Map m) {
+    private static Position findOpenPosition(World w) {
+        Map m = w.getMap();
         Random rng = new Random(System.currentTimeMillis());
         Position pos = null;
-        do {
+        while (true) {
             int row = rng.nextInt(m.nrows());
             int col = rng.nextInt(m.ncols());
-            if (m.getTile(row, col).getGlyph() == Glyphs.OPEN) {
-                pos = new Position(row, col);
+            pos = new Position(row, col);
+            if (w.isOpen(pos)) {
+                break;
             }
-            
-        } while (pos == null);
+        }
         
         return pos;
     }
 
+    private static void spawnOrcs(World w) {
+        for (int i = 0; i < Constants.NPE_ORC_COUNT; ++i) {
+            w.addEntity(new Orc(findOpenPosition(w)));
+        }
+    }
 }

@@ -22,9 +22,9 @@ package lambdacaverns.ui;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.Terminal;
 
-import lambdacaverns.common.Glyphs;
 import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
+import lambdacaverns.world.map.Tile;
 
 /**
  * The screen pane that displays the sidebar. The sidebar displays players
@@ -65,20 +65,16 @@ public class SidebarPane extends Pane {
                 Terminal.Color.BLACK);
         row++;
         
-        screen().putString(col, row, Glyphs.PLAYER + " - Player", Terminal.Color.YELLOW,
-                Terminal.Color.BLACK);
-        row++;
-        screen().putString(col, row, Glyphs.WALL + " - Wall", Terminal.Color.WHITE,
-                Terminal.Color.BLACK);
-        row++;
-        screen().putString(col, row, Glyphs.WATER + " - Water", Terminal.Color.BLUE,
-                Terminal.Color.BLACK);
-        row++;
-        screen().putString(col, row, Glyphs.TREE + " - Trees", Terminal.Color.GREEN,
-                Terminal.Color.BLACK);
+        for (Tile t : Tile.values()) {
+            if (t.getLabel().equals("")) continue;
+            
+            screen().putString(col, row, t.getGlyph() + " - " + t.getLabel(),
+                    t.getColour(), Terminal.Color.BLACK);
+            row++;
+        }
         
         // Keys
-        row += 3;
+        row += 2;
         screen().putString(col, row, "---- Keys  ----", Terminal.Color.WHITE,
                 Terminal.Color.BLACK);
         row++;

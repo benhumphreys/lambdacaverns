@@ -19,12 +19,16 @@
  */
 package lambdacaverns.world;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import lambdacaverns.Constants;
 import lambdacaverns.common.Actions;
-import lambdacaverns.common.Glyphs;
 import lambdacaverns.common.Position;
+import lambdacaverns.world.entities.IEntity;
 import lambdacaverns.world.entities.Player;
 import lambdacaverns.world.map.Map;
+import lambdacaverns.world.map.Tile;
 
 /**
  * Encapsulates the state of the game world.
@@ -32,14 +36,13 @@ import lambdacaverns.world.map.Map;
 public class World {
     private Map map;
     private Player player;
+    private Set<IEntity> entities;
     private Messages messages;
 
-    public World() {
+    public World(Map map) {
+        entities = new HashSet<IEntity>();
         messages = new Messages(Constants.TEXTAREA_HEIGHT);
-    }
-
-    public void init(Map map, Player player) {
-        this.player = player;
+        player = new Player(new Position(0, 0));
         this.map = map;
     }
 
@@ -47,9 +50,9 @@ public class World {
         Player av = getPlayer();
         int row = av.getPosition().row();
         int col = av.getPosition().col();
-        
+
         Position newPos = null;
-        
+
         switch (action) {
         case MOVE_UP:
             newPos = new Position(row - 1, col);
@@ -67,14 +70,30 @@ public class World {
             getMessages().add("Unknown Key");
             return;
         }
-                
-        if (!getMap().withinMap(newPos)
-                || getMap().getTile(newPos.row(),
-                        newPos.col()).getGlyph() != Glyphs.OPEN) {
+
+        if (!getMap().withinMap(newPos) || !isOpen(newPos)) {
             getMessages().add("Cannot move there");
         } else {
             av.setPosition(newPos);
         }
+
+        // Run tick for all non-player entities
+        for (IEntity e : entities) {
+            e.tick(this);
+        }
+    }
+
+    public boolean isOpen(Position p) {
+        if (getMap().getTile(p.row(), p.col()) != Tile.OPEN)
+            return false;
+        if (p.equals(getPlayer().getPosition()))
+            return false;
+        for (IEntity e : entities) {
+            if (p.equals(e.getPosition()))
+                return false;
+        }
+
+        return true;
     }
 
     public Map getMap() {
@@ -87,5 +106,13 @@ public class World {
 
     public Messages getMessages() {
         return messages;
+    }
+
+    public Set<IEntity> getEntities() {
+        return entities;
+    }
+
+    public void addEntity(IEntity e) {
+        entities.add(e);
     }
 }

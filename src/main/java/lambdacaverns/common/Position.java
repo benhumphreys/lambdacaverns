@@ -23,8 +23,8 @@ package lambdacaverns.common;
  * Encapsulates a row/column (x/y) position on the map.
  */
 public class Position {
-    private int _row;
-    private int _col;
+    private final int _row;
+    private final int _col;
     
     public Position(int row, int col) {
         _row = row;
@@ -37,5 +37,17 @@ public class Position {
     
     public int col() {
         return _col;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Position)) return false;
+        Position other = (Position)o;
+        return _row == other._row && _col == other._col;
+    }
+    
+    @Override
+    public int hashCode() {
+        return _row + (31 * _col);
     }
 }

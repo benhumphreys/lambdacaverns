@@ -22,8 +22,6 @@ package lambdacaverns.world.map;
 import java.util.Date;
 import java.util.Random;
 
-import lambdacaverns.common.Glyphs;
-
 /**
  * A basic cellular automata based map generator. The technique used is taken
  * from here:
@@ -59,7 +57,7 @@ public class MapGen {
     private static void randomise(Map m) {
         final double PROBABILITY_WALL = 0.45;
         Random rand = new Random(new Date().getTime());
-        Tile wall = new Tile(Glyphs.WALL);
+        Tile wall = Tile.WALL;
         
         for (int row = 0; row < m.nrows(); row++) {
             for (int col = 0; col < m.ncols(); col++) {
@@ -76,8 +74,8 @@ public class MapGen {
      * @param fillEmpty
      */
     private static void smooth(Map m, boolean fillEmpty) {
-        Tile wall = new Tile(Glyphs.WALL);
-        Tile open = new Tile(Glyphs.OPEN);
+        Tile wall = Tile.WALL;
+        Tile open = Tile.OPEN;
         
         final int nrows = m.nrows();
         final int ncols = m.ncols();
@@ -95,7 +93,7 @@ public class MapGen {
                        if (i < 0 || j < 0 || i >= nrows || j >= ncols) {
                            wallcount++;
                        } else {
-                           if (m.getTile(i, j).getGlyph() == Glyphs.WALL) {
+                           if (m.getTile(i, j) == Tile.WALL) {
                                wallcount++;
                            }
                        }

@@ -21,7 +21,6 @@ package lambdacaverns.world.map;
 
 import java.util.Vector;
 
-import lambdacaverns.common.Glyphs;
 import lambdacaverns.common.Position;
 
 /**
@@ -29,8 +28,8 @@ import lambdacaverns.common.Position;
  */
 public class Map {
     private Vector<Tile> data;
-    int _nrows;
-    int _ncols;
+    private int _nrows;
+    private int _ncols;
 
     public Map(int nrows, int ncols) {
         // Pre-conditions
@@ -43,7 +42,7 @@ public class Map {
         // Initialise data vector
         data = new Vector<Tile>(nrows * ncols);
         for (int i = 0; i < nrows * ncols; ++i) {
-            data.add(new Tile(Glyphs.OPEN));
+            data.add(Tile.OPEN);
         }
     }
 

@@ -20,6 +20,8 @@
 package lambdacaverns.world.entities;
 
 import lambdacaverns.common.Position;
+import lambdacaverns.world.World;
+import lambdacaverns.world.map.Tile;
 
 public interface IEntity {
     
@@ -33,4 +35,14 @@ public interface IEntity {
      * @return the current location of the entity.
      */
     public Position getPosition();
+    
+    /**
+     * @return the tile type that represents this entity.
+     */
+    public Tile getTile();
+    
+    /**
+     * @param w the current state of the world
+     */
+    public void tick(World w);
 }

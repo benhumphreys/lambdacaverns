@@ -20,6 +20,8 @@
 package lambdacaverns.world.entities;
 
 import lambdacaverns.common.Position;
+import lambdacaverns.world.World;
+import lambdacaverns.world.map.Tile;
 
 /**
  * Encapsulates the player entity.
@@ -99,5 +101,16 @@ public class Player implements IEntity {
      */
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    @Override
+    public Tile getTile() {
+        return Tile.PLAYER;
+    }
+
+    @Override
+    public void tick(World w) {
+        // TODO Auto-generated method stub
+        
     }
 }

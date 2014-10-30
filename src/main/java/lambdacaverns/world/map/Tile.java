@@ -19,27 +19,48 @@
  */
 package lambdacaverns.world.map;
 
-import lambdacaverns.common.Glyphs;
+import com.googlecode.lanterna.terminal.Terminal;
 
 /**
  * A map tile.
  */
-public class Tile {
-    char glyph;
+public enum Tile {
+    OPEN('.', "", Terminal.Color.WHITE),
+    PLAYER('@', "Player", Terminal.Color.YELLOW, true),
+    WALL('#', "Wall", Terminal.Color.WHITE),
+    WATER('~', "Water", Terminal.Color.BLUE),
+    TREE('^', "Tree", Terminal.Color.GREEN),
+    ORC('O', "Orc", Terminal.Color.RED);
     
-    public Tile() {
-        this.glyph = Glyphs.OPEN;
+    private char glyph;
+    private String label;
+    private Terminal.Color colour;
+    private boolean bold;
+    
+    private Tile(char glyph, String label, Terminal.Color colour, boolean bold) {
+        this.glyph = glyph;
+        this.label = label;
+        this.colour = colour;
+        this.bold = bold;
     }
     
-    public Tile(char glyph) {
-        this.glyph = glyph;
+    private Tile(char glyph, String label, Terminal.Color colour) {
+        this(glyph, label, colour, false);
     }
     
     public char getGlyph() {
         return glyph;
     }
     
-    public void setGlyph(char g) {
-        this.glyph = g;
+    public String getLabel() {
+        return label;
+    }
+
+    public Terminal.Color getColour() {
+        return colour;
+    }
+    
+    public boolean getBold() {
+        return bold;
     }
 }

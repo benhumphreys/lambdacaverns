@@ -19,13 +19,15 @@
  */
 package lambdacaverns.ui;
 
+import java.util.Set;
+
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.ScreenCharacterStyle;
 import com.googlecode.lanterna.terminal.Terminal;
 
-import lambdacaverns.common.Glyphs;
 import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
+import lambdacaverns.world.entities.IEntity;
 import lambdacaverns.world.entities.Player;
 import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.Tile;
@@ -34,18 +36,18 @@ import lambdacaverns.world.map.Tile;
  * The screen pane that displays the Map.
  */
 public class MapPane extends Pane {
-    int firstScreenRow;
-    int firstScreenCol;
-        
+    private int firstScreenRow;
+    private int firstScreenCol;
+
     // Width of the map area (i.e. pane width minus borders)
-    int mapWidth;
-    
+    private int mapWidth;
+
     // Height of the map area (i.e. pane height minus borders)
-    int mapHeight;
+    private int mapHeight;
 
     public MapPane(Screen s, int height, int width, Position corner) {
         super(s, height, width, corner);
-        
+
         firstScreenRow = corner().row() + 1;
         firstScreenCol = corner().col() + 1;
         mapWidth = width() - 2;
@@ -55,9 +57,9 @@ public class MapPane extends Pane {
     @Override
     void draw(World w) {
         drawBorders();
-        drawMap(w.getMap(), w.getPlayer());
+        drawPane(w);
     }
-    
+
     private void drawBorders() {
         StringBuffer hline = new StringBuffer();
         hline.append("+");
@@ -86,43 +88,78 @@ public class MapPane extends Pane {
         }
     }
 
-    private void drawMap(Map m, Player a) {
+    private void drawPane(World w) {
+        final Map m = w.getMap();
+        final Player ply = w.getPlayer();
+
         // Calculate the map position which will align with the top-left-corner
         // of the pane. This depends on the player position, try to keep the
         // player in the centre, however as the player approaches the edge of
         // the map stays stationary and the player moves.
-        int mapTlcRow = a.getPosition().row() - (mapHeight / 2);
+        int mapTlcRow = ply.getPosition().row() - (mapHeight / 2);
         mapTlcRow = Math.max(0, mapTlcRow);
         mapTlcRow = Math.min(m.nrows() - mapHeight, mapTlcRow);
-        
-        int mapTlcCol = a.getPosition().col() - (mapWidth / 2);
+
+        int mapTlcCol = ply.getPosition().col() - (mapWidth / 2);
         mapTlcCol = Math.max(0, mapTlcCol);
         mapTlcCol = Math.min(m.ncols() - mapWidth, mapTlcCol);
-        
+
         // Draw
+        drawMap(mapTlcRow, mapTlcCol, m);
+        drawEntities(mapTlcRow, mapTlcCol, w.getEntities());
+        drawEntity(mapTlcRow, mapTlcCol, ply, true);
+    }
+
+    // Draws the map tiles to the map pane
+    private void drawMap(int mapTlcRow, int mapTlcCol, Map m) {
         for (int row = 0; row < mapHeight; row++) {
             for (int col = 0; col < mapWidth; col++) {
                 Tile t = m.getTile(mapTlcRow + row, mapTlcCol + col);
-                
-                screen().putString(firstScreenCol + col,
-                        firstScreenRow + row,
-                        Character.toString(t.getGlyph()),
-                        Terminal.Color.WHITE,
+
+                screen().putString(firstScreenCol + col, firstScreenRow + row,
+                        Character.toString(t.getGlyph()), t.getColour(),
                         Terminal.Color.BLACK);
-                
-                if (a.getPosition().row() == mapTlcRow + row
-                        && a.getPosition().col() == mapTlcCol + col) {
-                    screen().putString(firstScreenCol + col,
-                            firstScreenRow + row,
-                            Character.toString(Glyphs.PLAYER),
-                            Terminal.Color.YELLOW,
-                            Terminal.Color.BLACK,
-                            ScreenCharacterStyle.Bold);
-                    
-                    screen().setCursorPosition(firstScreenCol + col,
-                            firstScreenRow + row);
-                }
             }
+        }
+    }
+
+    // Draw all non-player entities on to the map pane
+    private void drawEntities(int mapTlcRow, int mapTlcCol,
+            Set<IEntity> entities) {
+        for (IEntity e : entities) {
+            Position pos = e.getPosition();
+
+            // Does the entity fall within the visible part of the map?
+            if (pos.row() >= mapTlcRow && pos.row() < mapTlcRow + mapHeight
+                    && pos.col() >= mapTlcCol
+                    && pos.col() < mapTlcCol + mapWidth) {
+                drawEntity(mapTlcRow, mapTlcCol, e, false);
+            }
+        }
+    }
+
+    // Draw a single entity on the map pane
+    private void drawEntity(int mapTlcRow, int mapTlcCol, IEntity e,
+            boolean isPlayer) {
+        Position pos = e.getPosition();
+
+        // Calculate draw position
+        int drawcol = firstScreenCol + (pos.col() - mapTlcCol);
+        int drawrow = firstScreenRow + (pos.row() - mapTlcRow);
+
+        Tile t = e.getTile();
+        if (t.getBold()) {
+            screen().putString(drawcol, drawrow,
+                    Character.toString(t.getGlyph()), t.getColour(),
+                    Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
+        } else {
+            screen().putString(drawcol, drawrow,
+                    Character.toString(t.getGlyph()), t.getColour(),
+                    Terminal.Color.BLACK);
+        }
+
+        if (isPlayer) {
+            screen().setCursorPosition(drawcol, drawrow);
         }
     }
 }
