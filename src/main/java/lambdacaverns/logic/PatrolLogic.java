@@ -75,7 +75,7 @@ public class PatrolLogic {
         int col = rnd.nextInt(3) - 1;
         Position newpos = new Position(current.row() + row,
                 current.col() + col);
-        if (!m.withinMap(newpos) && !w.isOpen(newpos)) {
+        if (!m.withinMap(newpos) || !w.isOpen(newpos)) {
             return current;
         }
         

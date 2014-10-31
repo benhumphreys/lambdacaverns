@@ -58,10 +58,18 @@ public class Map {
         checkPosition(row, col);
         return data.get((row * _ncols) + col);
     }
+    
+    public Tile getTile(Position p) {
+        return getTile(p.row(), p.col());
+    }
 
     public void setTile(int row, int col, Tile t) {
         checkPosition(row, col);
         data.set(((row * _ncols) + col), t);
+    }
+    
+    public void setTile(Position p, Tile t) {
+        setTile(p.row(), p.col(), t);
     }
     
     public Boolean withinMap(Position pos) {

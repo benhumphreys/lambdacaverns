@@ -108,7 +108,7 @@ public class World {
      */
     public boolean isOpen(Position p) {
         if (!getMap().withinMap(p)) return false;
-        if (getMap().getTile(p.row(), p.col()) != Tile.OPEN)
+        if (getMap().getTile(p) != Tile.OPEN)
             return false;
         if (p.equals(getPlayer().getPosition()))
             return false;
@@ -133,7 +133,7 @@ public class World {
     public boolean isAttackable(Position p) {
         if (!getMap().withinMap(p)) return false;
 
-        if (getMap().getTile(p.row(), p.col()) != Tile.OPEN)
+        if (getMap().getTile(p) != Tile.OPEN)
             return false;
 
         // Does an attackable non-player entity exist?

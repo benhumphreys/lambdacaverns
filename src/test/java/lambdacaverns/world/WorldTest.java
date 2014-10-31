@@ -7,6 +7,7 @@ import java.util.Random;
 import lambdacaverns.common.Actions;
 import lambdacaverns.common.Position;
 import lambdacaverns.world.map.Map;
+import lambdacaverns.world.map.Tile;
 import lambdacaverns.world.entities.IEntity;
 
 import org.junit.After;
@@ -55,6 +56,7 @@ public class WorldTest {
         // Ensure all non-player entities are within map bounds
         for (IEntity e : w.getEntities()) {
             assertWithinMapBounds(w.getMap(), e);
+            assertTrue(w.getMap().getTile(e.getPosition()) == Tile.OPEN);
         }
         
     }
