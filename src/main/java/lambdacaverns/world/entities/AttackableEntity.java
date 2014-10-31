@@ -19,34 +19,43 @@
  */
 package lambdacaverns.world.entities;
 
-import lambdacaverns.common.Position;
-import lambdacaverns.world.World;
-import lambdacaverns.world.map.Tile;
+/**
+ * An attackable entity base class
+ * 
+ * This abstract class provides the concepts of health and armour,
+ * as is required to satisfy the IAttackable interface.
+ */
+public abstract class AttackableEntity implements IEntity, IAttackable {
+    private int health;
+    private int armour;
 
-public interface IEntity {
-    /**
-     * @return the name of the entity 
-     */
-    public String getName();
+    public AttackableEntity(int initialHealth, int initialArmour) {
+        health = initialHealth;
+        armour = initialArmour;
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void damage(int amount) {
+        health = Math.max(0, health - amount);
+    }
+
+    @Override
+    public void heal(int amount) {
+        health += amount;
+    }
     
-    /**
-     * Sets the location of the entity to the position specified.
-     * @param pos   the new location for the entity.
-     */
-    public void setPosition(Position pos);
+    @Override
+    public int getArmour() {
+        return armour;
+    }
     
-    /**
-     * @return the current location of the entity.
-     */
-    public Position getPosition();
-    
-    /**
-     * @return the tile type that represents this entity.
-     */
-    public Tile getTile();
-    
-    /**
-     * @param w the current state of the world
-     */
-    public void tick(World w);
+    @Override
+    public void setArmour(int armour) {
+        this.armour = armour;
+    }
 }

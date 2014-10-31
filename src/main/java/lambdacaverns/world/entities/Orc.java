@@ -19,19 +19,24 @@
  */
 package lambdacaverns.world.entities;
 
-import java.util.Random;
-
+import lambdacaverns.Constants;
 import lambdacaverns.common.Position;
+import lambdacaverns.logic.CombatLogic;
+import lambdacaverns.logic.PatrolLogic;
 import lambdacaverns.world.World;
-import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.Tile;
 
-public class Orc implements IEntity {
+/**
+ * Encapsulates an NPC Orc
+ */
+public class Orc extends AttackableEntity {
     private Position position;
-    private static Random rng = new Random(System.currentTimeMillis());
+    private PatrolLogic patrol;
 
     public Orc(Position pos) {
+        super(Constants.ORC_MAX_HEALTH, Constants.ORC_ARMOUR);
         this.position = pos;
+        patrol = new PatrolLogic(pos, 5);
     }
 
     @Override
@@ -51,20 +56,26 @@ public class Orc implements IEntity {
 
     @Override
     public void tick(World w) {
-        position = randomStep(w);
+        Player ply = w.getPlayer();
+        if (getPosition().distanceTo(ply.getPosition()) <= 1) {
+            CombatLogic.combat(w, this, ply);
+        } else {
+            position = patrol.nextPosition(w, getPosition());
+        }
+    }
+    
+    @Override
+    public String getName() {
+        return "Orc";
+    }
+    
+    @Override
+    public String toString() {
+        return "[" + this.getClass().getName() + " " + position + "]";
     }
 
-    // Randomly take a step
-    private Position randomStep(World w) {
-        final Map m = w.getMap();
-        int row = rng.nextInt(3) - 1;
-        int col = rng.nextInt(3) - 1;
-        Position newpos = new Position(position.row() + row,
-                position.col() + col);
-        if (m.withinMap(newpos) && w.isOpen(newpos)) {
-            return newpos;
-        } else {
-            return position;
-        }
+    @Override
+    public int getDamagePerTurn() {
+        return Constants.ORC_MAX_DAMAGE;
     }
 }

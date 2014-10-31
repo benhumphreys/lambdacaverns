@@ -19,7 +19,6 @@
  */
 package lambdacaverns.world.map;
 
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -34,9 +33,9 @@ public class MapGen {
      * @param nrows height of the map to be generated
      * @param ncols width of the map to be generated.
      */
-    public static Map generate(int nrows, int ncols) {
+    public static Map generate(int nrows, int ncols, Random rnd) {
         Map m = new Map(nrows, ncols);
-        randomise(m);
+        randomise(m, rnd);
         
         final int iterations = 5;
         for (int i = 0; i < iterations; i++) {
@@ -54,14 +53,13 @@ public class MapGen {
      * Randomise the map uses a probability of 45% that a given tile
      * will be a wall.
      */
-    private static void randomise(Map m) {
+    private static void randomise(Map m, Random rnd) {
         final double PROBABILITY_WALL = 0.45;
-        Random rand = new Random(new Date().getTime());
         Tile wall = Tile.WALL;
         
         for (int row = 0; row < m.nrows(); row++) {
             for (int col = 0; col < m.ncols(); col++) {
-                if (rand.nextDouble() < PROBABILITY_WALL) {
+                if (rnd.nextDouble() < PROBABILITY_WALL) {
                     m.setTile(row,  col, wall);
                 }
             }

@@ -19,21 +19,33 @@
  */
 package lambdacaverns.world.entities;
 
+import lambdacaverns.Constants;
+import lambdacaverns.common.Actions;
 import lambdacaverns.common.Position;
+import lambdacaverns.logic.CombatLogic;
 import lambdacaverns.world.World;
 import lambdacaverns.world.map.Tile;
 
 /**
  * Encapsulates the player entity.
  */
-public class Player implements IEntity {
+public class Player extends AttackableEntity {
+    /** The current position of the player */
     private Position position;
-    private int health = 100;
-    private int maxHealth = 100;
-    private int armour = 100;
-    private int gold = 0;
+    
+    /** The maximum health of the player */
+    private int maxHealth = Constants.PLAYER_STARTING_MAX_HEALTH;
+    
+    /** The current number of gold coins carried by the player */
+    private int gold = Constants.PLAYER_STARTING_GOLD;
 
+    /** Constructor
+     * 
+     * @param pos the starting position for the player.
+     */
     public Player(Position pos) {
+        super(Constants.PLAYER_STARTING_MAX_HEALTH,
+                Constants.PLAYER_STARTING_ARMOUR_VALUE);
         this.position = pos;
     }
     
@@ -45,20 +57,6 @@ public class Player implements IEntity {
     @Override
     public void setPosition(Position pos) {
         this.position = pos;
-    }
-    
-    /**
-     * @return the health
-     */
-    public int getHealth() {
-        return health;
-    }
-
-    /**
-     * @param health the health to set
-     */
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     /**
@@ -73,20 +71,6 @@ public class Player implements IEntity {
      */
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
-    }
-
-    /**
-     * @return the armour
-     */
-    public int getArmour() {
-        return armour;
-    }
-
-    /**
-     * @param armour the armour to set
-     */
-    public void setArmour(int armour) {
-        this.armour = armour;
     }
     
     /**
@@ -110,7 +94,55 @@ public class Player implements IEntity {
 
     @Override
     public void tick(World w) {
-        // TODO Auto-generated method stub
+        // Player tick is handled by playerTick(World, Action)
+    }
+    
+    public void playerTick(World w, Actions action) {
+        int row = getPosition().row();
+        int col = getPosition().col();
+
+        Position newPos = null;
+
+        switch (action) {
+        case MOVE_UP:
+            newPos = new Position(row - 1, col);
+            break;
+        case MOVE_DOWN:
+            newPos = new Position(row + 1, col);
+            break;
+        case MOVE_LEFT:
+            newPos = new Position(row, col - 1);
+            break;
+        case MOVE_RIGHT:
+            newPos = new Position(row, col + 1);
+            break;
+        default:
+            w.getMessages().add("Unknown Key");
+            return;
+        }
         
+        if (w.isOpen(newPos)) {
+            setPosition(newPos);
+        } else {
+            if (w.isAttackable(newPos)) {
+                AttackableEntity e = (AttackableEntity) w.getEntityAtPos(newPos);
+                CombatLogic.combat(w, w.getPlayer(), e);
+                if (e.getHealth() == 0) {
+                    setPosition(newPos);
+                }
+            } else {
+                w.getMessages().add("Cannot move there");
+            }
+        }
+    }
+
+    @Override
+    public String getName() {
+        return "Player";
+    }
+
+    @Override
+    public int getDamagePerTurn() {
+        return Constants.PLAYER_MAX_DAMAGE;
     }
 }

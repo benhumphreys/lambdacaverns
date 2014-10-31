@@ -20,7 +20,7 @@
 package lambdacaverns.common;
 
 /**
- * Encapsulates a row/column (x/y) position on the map.
+ * Encapsulates an immutable row/column (x/y) position on the map
  */
 public class Position {
     private final int _row;
@@ -31,12 +31,31 @@ public class Position {
         _col = col;
     }
     
+    /**
+     * @return the row
+     */
     public int row() {
         return _row;
     }
     
+    /**
+     * @return the column
+     */
     public int col() {
         return _col;
+    }
+    
+    /**
+     * Returns the distance between this position and another.
+     * @param other the other position to calculate the distance to
+     * @return the distance between "this" position and the "other" position
+     */
+    public int distanceTo(Position other) {
+        if (this.equals(other)) return 0;
+        
+        int diffrow = Math.abs(row() - other.row());
+        int diffcol = Math.abs(col() - other.col());
+        return (int)Math.floor(Math.sqrt((diffrow * diffrow) + (diffcol * diffcol)));
     }
     
     @Override
@@ -49,5 +68,10 @@ public class Position {
     @Override
     public int hashCode() {
         return _row + (31 * _col);
+    }
+    
+    @Override 
+    public String toString() {
+        return "(" + row() + ", " + col() + ")";
     }
 }

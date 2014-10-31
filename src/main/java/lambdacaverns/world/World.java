@@ -20,11 +20,15 @@
 package lambdacaverns.world;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 
 import lambdacaverns.Constants;
 import lambdacaverns.common.Actions;
 import lambdacaverns.common.Position;
+import lambdacaverns.world.entities.AttackableEntity;
+import lambdacaverns.world.entities.IAttackable;
 import lambdacaverns.world.entities.IEntity;
 import lambdacaverns.world.entities.Player;
 import lambdacaverns.world.map.Map;
@@ -35,55 +39,75 @@ import lambdacaverns.world.map.Tile;
  */
 public class World {
     private Map map;
+    private Random random;
     private Player player;
     private Set<IEntity> entities;
     private Messages messages;
 
-    public World(Map map) {
+    /**
+     * Constructor
+     * 
+     * @param map the map upon which the world is built
+     * @param rnd source of randomness for the world
+     */
+    World(Map map, Random rnd) {
         entities = new HashSet<IEntity>();
         messages = new Messages(Constants.TEXTAREA_HEIGHT);
         player = new Player(new Position(0, 0));
         this.map = map;
+        this.random = rnd;
     }
 
+    /**
+     * Progress the state of the world by one tick.
+     * The player gets one requested action per tick.
+     * 
+     * @param action the action the player wishes to perform
+     */
     public void tick(Actions action) {
-        Player av = getPlayer();
-        int row = av.getPosition().row();
-        int col = av.getPosition().col();
-
-        Position newPos = null;
-
-        switch (action) {
-        case MOVE_UP:
-            newPos = new Position(row - 1, col);
-            break;
-        case MOVE_DOWN:
-            newPos = new Position(row + 1, col);
-            break;
-        case MOVE_LEFT:
-            newPos = new Position(row, col - 1);
-            break;
-        case MOVE_RIGHT:
-            newPos = new Position(row, col + 1);
-            break;
-        default:
-            getMessages().add("Unknown Key");
+        Player ply = getPlayer();
+        if (ply.getHealth() == 0) {
+            getMessages().add("You can't do anything, you are dead!");
             return;
         }
 
-        if (!getMap().withinMap(newPos) || !isOpen(newPos)) {
-            getMessages().add("Cannot move there");
-        } else {
-            av.setPosition(newPos);
-        }
+        // Run tick for player
+        ply.playerTick(this, action);
 
         // Run tick for all non-player entities
         for (IEntity e : entities) {
+            
+            // Ensure dead entities don't get to do anything
+            if (e instanceof AttackableEntity) {
+                AttackableEntity ae = (AttackableEntity)e;
+                if (ae.getHealth() == 0) {
+                    continue;
+                }
+            }
+            
             e.tick(this);
         }
+
+        if (ply.getHealth() == 0) {
+            getMessages().add("YOU HAVE DIED!");
+        }
+
+        reapDeadEntities();
     }
 
+    /**
+     * Indicate of the tile is open. A tile is open if:
+     * <ul>
+     * <li> the position is within the map; and
+     * <li> the map tile is of type Tile.OPEN; and
+     * <li> the player is not located on the specified tile; and
+     * <li> a non-player entity is not present on the specified tile.
+     * </ul>
+     * @param p the position to check
+     * @return true if the position is open, otherwise false
+     */
     public boolean isOpen(Position p) {
+        if (!getMap().withinMap(p)) return false;
         if (getMap().getTile(p.row(), p.col()) != Tile.OPEN)
             return false;
         if (p.equals(getPlayer().getPosition()))
@@ -96,23 +120,118 @@ public class World {
         return true;
     }
 
+    /**
+     * Indicate of the tile is attackable. A tile is attackable if:
+     * <ul>
+     * <li> the position is within the map; and
+     * <li> the map tile is of type Tile.OPEN; and
+     * <li> an attackable entity (including the player) is on the tile
+     * </ul>
+     * @param p the position to check
+     * @return true if the position is open, otherwise false
+     */
+    public boolean isAttackable(Position p) {
+        if (!getMap().withinMap(p)) return false;
+
+        if (getMap().getTile(p.row(), p.col()) != Tile.OPEN)
+            return false;
+
+        // Does an attackable non-player entity exist?
+        for (IEntity e : entities) {
+            if (p.equals(e.getPosition()))
+                return e instanceof IAttackable;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return the world map
+     */
     public Map getMap() {
         return map;
     }
 
+    /**
+     * @return the player entity object
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Gets the Messages object associated with the world.
+     * The messages object is use to log messages to the screen.
+     * @return the messages object
+     */
     public Messages getMessages() {
         return messages;
     }
 
+    /**
+     * Returns a set of entities (excluding the player) in the world.
+     * Note, this is not a copy so modifications made to entities in this
+     * set are applied to the actual world.
+     * 
+     * @return a set of entities
+     */
     public Set<IEntity> getEntities() {
         return entities;
     }
 
+    /**
+     * Adds an entity to the world
+     * @param e the entity to add
+     */
     public void addEntity(IEntity e) {
         entities.add(e);
+    }
+
+    /**
+     * Returns the global random number generator (RNG). This is world-scope
+     * (global) for two primary reasons. Firstly, being able to inject a RNG
+     * at a single location makes unit testing easier. Secondly, if multiple
+     * entities have separate pseudo-RNG objects, it is possible for the
+     * same number sequence to be returned, resulting in a number of objects
+     * (e.g. NPCs) having identical behaviour.
+     * 
+     * @return the global random number generator
+     */
+    public Random getRandom() {
+        return random;
+    }
+
+    /**
+     * Gets an entity at the position given by "p".
+     * @param p the position at which to get an entity.
+     * @return  the entity at position "p", or null if no entity exists at
+     *          the specified position.
+     */
+    public IEntity getEntityAtPos(Position p) {
+        if (!getMap().withinMap(p)) throw new IndexOutOfBoundsException();
+
+        for (IEntity e : entities) {
+            if (p.equals(e.getPosition()))
+                return e;
+        }
+
+        return null;
+    }
+
+    /**
+     * Iterates through the entities set and removes all entities
+     * which have a health value of zero.
+     */
+    private void reapDeadEntities() {
+        Iterator<IEntity> it = entities.iterator();
+        while (it.hasNext()) {
+            final IEntity e = it.next();
+            if (e instanceof IAttackable) {
+                final IAttackable ae = (IAttackable)e;
+                if (ae.getHealth() == 0) {
+                    it.remove();
+                }
+            }
+        }
     }
 }

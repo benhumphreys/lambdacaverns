@@ -86,7 +86,34 @@ public class Constants {
     public static final int PADDING_TOP_SIDEBAR = 1;
     
     /*********************************************************************
-     *  NON-PLAYER ENTITIES
+     * PLAYER
      ********************************************************************/
+    
+    /** Initial value of max health for player */
+    public static final int PLAYER_STARTING_MAX_HEALTH = 100;
+    
+    /** Initial armour value of player */
+    public static final int PLAYER_STARTING_ARMOUR_VALUE = 0;
+    
+    /** Initial amount of gold for player */
+    public static final int PLAYER_STARTING_GOLD = 0;
+    
+    /** Damage per turn the player can do to another entity */
+    public static final int PLAYER_MAX_DAMAGE = 4;
+    
+    /*********************************************************************
+     * NON-PLAYER ENTITIES
+     ********************************************************************/
+    
+    /** Number of Orcs at time of world creation */
     public static final int NPE_ORC_COUNT = 50;
+    
+    /** Max health value for an Orc */
+    public static final int ORC_MAX_HEALTH = 10;
+    
+    /** Armour rating for an Orc */
+    public static final int ORC_ARMOUR = 0;
+    
+    /** Damage per turn on Orc can do to another entity */
+    public static final int ORC_MAX_DAMAGE = 3;
 }

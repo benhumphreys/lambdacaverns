@@ -21,6 +21,7 @@ package lambdacaverns;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import com.googlecode.lanterna.terminal.*;
 import com.googlecode.lanterna.TerminalFacade;
@@ -79,7 +80,7 @@ public class App {
      * @return the world!
      */
     private static World createWorld() {
-        return WorldGen.generate();
+        return WorldGen.generate(new Random(System.currentTimeMillis()));
     }
     
     /**
