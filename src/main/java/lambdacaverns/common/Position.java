@@ -58,6 +58,9 @@ public class Position {
         return (int)Math.floor(Math.sqrt((diffrow * diffrow) + (diffcol * diffcol)));
     }
     
+    /**
+     * Positions are equal if they have the same row and column
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Position)) return false;

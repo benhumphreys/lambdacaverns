@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,8 @@
  */
 package lambdacaverns.world.map;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import lambdacaverns.common.Position;
 
@@ -27,59 +28,81 @@ import lambdacaverns.common.Position;
  * Encapsulates the map. This is just a matrix of Tile objects.
  */
 public class Map {
-    private Vector<Tile> data;
-    private int _nrows;
-    private int _ncols;
+    private List<Tile> data;
+    private int nrows;
+    private int ncols;
 
     public Map(int nrows, int ncols) {
         // Pre-conditions
         assert (nrows > 0);
         assert (ncols > 0);
 
-        this._nrows = nrows;
-        this._ncols = ncols;
+        this.nrows = nrows;
+        this.ncols = ncols;
 
         // Initialise data vector
-        data = new Vector<Tile>(nrows * ncols);
+        data = new ArrayList<Tile>(nrows * ncols);
         for (int i = 0; i < nrows * ncols; ++i) {
             data.add(Tile.OPEN);
         }
     }
 
+    /**
+     * @return the number of rows in the map
+     */
     public int nrows() {
-        return _nrows;
+        return nrows;
     }
 
+    /**
+     * @return the number of columns in the map
+     */
     public int ncols() {
-        return _ncols;
+        return ncols;
     }
 
+    /**
+     * Returns the tile at the given position.
+     * This more primitive interface (relative to the one that takes a
+     * Position) exists as an optimisation. Some code that iterates over
+     * the whole map can be very large for huge maps.
+     */
     public Tile getTile(int row, int col) {
         checkPosition(row, col);
-        return data.get((row * _ncols) + col);
+        return data.get((row * ncols) + col);
     }
     
+    /**
+     * Returns the tile at the given position.
+     */
     public Tile getTile(Position p) {
         return getTile(p.row(), p.col());
     }
 
+    /**
+     * Replaces the tile object at the specified position.
+     */
     public void setTile(int row, int col, Tile t) {
         checkPosition(row, col);
-        data.set(((row * _ncols) + col), t);
+        data.set(((row * ncols) + col), t);
     }
     
+    /**
+     * Replaces the tile object at the specified position.
+     */
     public void setTile(Position p, Tile t) {
         setTile(p.row(), p.col(), t);
     }
     
+    /**
+     * Tests if a position is within the map bounds.
+     * @param pos   the position to test
+     * @return      true if the position given by "pos" is within the map
+     *              bounds, otherwise false
+     */
     public Boolean withinMap(Position pos) {
-        if (pos.row() < 0 || pos.row() > _nrows - 1
-                || pos.col() < 0 || pos.col() > _ncols - 1) {
-            return false;
-        
-        } else {
-            return true;
-        }
+        return (pos.row() >= 0 && pos.row() < nrows
+                && pos.col() >= 0 && pos.col() < ncols);
     }
 
     /**
@@ -87,11 +110,11 @@ public class Map {
      * if the position is not within the map bounds.
      */
     private void checkPosition(int row, int col) {
-        if (row > _nrows - 1) {
+        if (row > nrows - 1) {
             throw new IndexOutOfBoundsException("Row: " + row
                     + " is out of bounds");
         }
-        if (col > _ncols - 1) {
+        if (col > ncols - 1) {
             throw new IndexOutOfBoundsException("Column: " + col
                     + " is out of bounds");
         }

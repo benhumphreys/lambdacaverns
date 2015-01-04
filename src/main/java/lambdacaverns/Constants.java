@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -105,6 +105,8 @@ public class Constants {
      * NON-PLAYER ENTITIES
      ********************************************************************/
     
+    /* ORCS */
+    
     /** Number of Orcs at time of world creation */
     public static final int NPE_ORC_COUNT = 50;
     
@@ -116,4 +118,18 @@ public class Constants {
     
     /** Damage per turn on Orc can do to another entity */
     public static final int ORC_MAX_DAMAGE = 3;
+    
+    /* GUARDS */
+    
+    /** Number of Guards at time of world creation */
+    public static final int NPE_GUARD_COUNT = 20;
+    
+    /** Max health value for an Guard */
+    public static final int GUARD_MAX_HEALTH = 10;
+    
+    /** Armour rating for an Guard */
+    public static final int GUARD_ARMOUR = 1;
+    
+    /** Damage per turn on Guard can do to another entity */
+    public static final int GUARD_MAX_DAMAGE = 3;
 }

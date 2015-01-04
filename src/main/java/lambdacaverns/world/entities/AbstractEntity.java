@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,30 +23,57 @@ import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
 import lambdacaverns.world.map.Tile;
 
-public interface IEntity {
+/**
+ * An interface for, and common implementation for all entities.
+ * Provides the implementation for basic attributes:
+ * <ul>
+ * <li> name (immutable)
+ * <li> tile glyph (immutable)
+ * <li> position (mutable)
+ * </ul>
+ */
+public abstract class AbstractEntity {
+    private final String name;
+    private final Tile tile;
+    private Position pos;
+    
+    public AbstractEntity(String name, Tile tile, Position pos) {
+        this.name = name;
+        this.pos = pos;
+        this.tile = tile;
+    }
+    
     /**
      * @return the name of the entity 
      */
-    public String getName();
+    public String getName() {
+        return name;
+    }
     
     /**
      * Sets the location of the entity to the position specified.
      * @param pos   the new location for the entity.
      */
-    public void setPosition(Position pos);
+    public void setPosition(Position pos) {
+        this.pos = pos;
+    }
     
     /**
      * @return the current location of the entity.
      */
-    public Position getPosition();
+    public Position getPosition() {
+        return pos;
+    }
     
     /**
      * @return the tile type that represents this entity.
      */
-    public Tile getTile();
+    public Tile getTile() {
+        return tile;
+    }
     
     /**
      * @param w the current state of the world
      */
-    public void tick(World w);
+    abstract public void tick(World w);
 }

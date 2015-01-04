@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ public class CombatLogic {
      *      the attack
      * </ul>
      * 
-     * @param w the current world
+     * @param w         the current world
      * @param attacker the entity that is attacking
      * @param defender the entity that is the subject of the attack
      */
@@ -85,7 +85,8 @@ public class CombatLogic {
             }
         } else {
             // If the player is not involved in combat, don't write any
-            // message
+            // message - But it can be useful to put debugging here to
+            // see NPC vs NPC combat
         }
     }
 }

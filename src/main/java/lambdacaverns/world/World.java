@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ import lambdacaverns.common.Actions;
 import lambdacaverns.common.Position;
 import lambdacaverns.world.entities.AttackableEntity;
 import lambdacaverns.world.entities.IAttackable;
-import lambdacaverns.world.entities.IEntity;
+import lambdacaverns.world.entities.AbstractEntity;
 import lambdacaverns.world.entities.Player;
 import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.Tile;
@@ -41,7 +41,7 @@ public class World {
     private Map map;
     private Random random;
     private Player player;
-    private Set<IEntity> entities;
+    private Set<AbstractEntity> entities;
     private Messages messages;
 
     /**
@@ -51,9 +51,10 @@ public class World {
      * @param rnd source of randomness for the world
      */
     World(Map map, Random rnd) {
-        entities = new HashSet<IEntity>();
+        entities = new HashSet<AbstractEntity>();
         messages = new Messages(Constants.TEXTAREA_HEIGHT);
         player = new Player(new Position(0, 0));
+        addEntity(player);
         this.map = map;
         this.random = rnd;
     }
@@ -75,8 +76,8 @@ public class World {
         ply.playerTick(this, action);
 
         // Run tick for all non-player entities
-        for (IEntity e : entities) {
-            
+        for (AbstractEntity e : entities) {
+
             // Ensure dead entities don't get to do anything
             if (e instanceof AttackableEntity) {
                 AttackableEntity ae = (AttackableEntity)e;
@@ -84,7 +85,7 @@ public class World {
                     continue;
                 }
             }
-            
+
             e.tick(this);
         }
 
@@ -108,13 +109,11 @@ public class World {
      */
     public boolean isOpen(Position p) {
         if (!getMap().withinMap(p)) return false;
-        if (getMap().getTile(p) != Tile.OPEN)
-            return false;
-        if (p.equals(getPlayer().getPosition()))
-            return false;
-        for (IEntity e : entities) {
-            if (p.equals(e.getPosition()))
+        if (getMap().getTile(p) != Tile.OPEN) return false;
+        for (AbstractEntity e : entities) {
+            if (p.equals(e.getPosition())) {
                 return false;
+            }
         }
 
         return true;
@@ -137,7 +136,7 @@ public class World {
             return false;
 
         // Does an attackable non-player entity exist?
-        for (IEntity e : entities) {
+        for (AbstractEntity e : entities) {
             if (p.equals(e.getPosition()))
                 return e instanceof IAttackable;
         }
@@ -169,13 +168,13 @@ public class World {
     }
 
     /**
-     * Returns a set of entities (excluding the player) in the world.
+     * Returns a set of entities (including the player) in the world.
      * Note, this is not a copy so modifications made to entities in this
      * set are applied to the actual world.
      * 
      * @return a set of entities
      */
-    public Set<IEntity> getEntities() {
+    public Set<AbstractEntity> getEntities() {
         return entities;
     }
 
@@ -183,7 +182,7 @@ public class World {
      * Adds an entity to the world
      * @param e the entity to add
      */
-    public void addEntity(IEntity e) {
+    public void addEntity(AbstractEntity e) {
         entities.add(e);
     }
 
@@ -207,12 +206,13 @@ public class World {
      * @return  the entity at position "p", or null if no entity exists at
      *          the specified position.
      */
-    public IEntity getEntityAtPos(Position p) {
+    public AbstractEntity getEntityAtPos(Position p) {
         if (!getMap().withinMap(p)) throw new IndexOutOfBoundsException();
 
-        for (IEntity e : entities) {
-            if (p.equals(e.getPosition()))
+        for (AbstractEntity e : entities) {
+            if (p.equals(e.getPosition())) {
                 return e;
+            }
         }
 
         return null;
@@ -223,12 +223,12 @@ public class World {
      * which have a health value of zero.
      */
     private void reapDeadEntities() {
-        Iterator<IEntity> it = entities.iterator();
+        Iterator<AbstractEntity> it = entities.iterator();
         while (it.hasNext()) {
-            final IEntity e = it.next();
+            final AbstractEntity e = it.next();
             if (e instanceof IAttackable) {
                 final IAttackable ae = (IAttackable)e;
-                if (ae.getHealth() == 0) {
+                if (ae.getHealth() == 0 && ae != getPlayer()) {
                     it.remove();
                 }
             }

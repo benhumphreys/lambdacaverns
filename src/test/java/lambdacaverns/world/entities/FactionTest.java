@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014-2015  Ben Humphreys
+ * Copyright (C) 2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,17 +19,28 @@
  */
 package lambdacaverns.world.entities;
 
-import lambdacaverns.Constants;
-import lambdacaverns.common.Position;
-import lambdacaverns.world.map.Tile;
+import static org.junit.Assert.*;
 
-/**
- * Encapsulates an NPC Orc
- */
-public class Orc extends AbstractPatrollingNPC {
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-    public Orc(Position pos) {
-        super("Orc", pos, Tile.ORC, Constants.ORC_MAX_HEALTH,
-                Constants.ORC_ARMOUR, Constants.ORC_MAX_DAMAGE, Faction.ORC);
+public class FactionTest {
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
+    @Test
+    public final void testIsHostile() {
+        assertTrue(Faction.FRIENDLY.isHostile(Faction.ORC));
+        assertTrue(Faction.ORC.isHostile(Faction.FRIENDLY));
+        
+        assertFalse(Faction.FRIENDLY.isHostile(Faction.FRIENDLY));
+        assertFalse(Faction.ORC.isHostile(Faction.ORC));
     }
 }

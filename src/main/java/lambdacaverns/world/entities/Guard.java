@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014-2015  Ben Humphreys
+ * Copyright (C) 2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,12 +24,13 @@ import lambdacaverns.common.Position;
 import lambdacaverns.world.map.Tile;
 
 /**
- * Encapsulates an NPC Orc
+ * Encapsulates an NPC Guard
  */
-public class Orc extends AbstractPatrollingNPC {
+public class Guard extends AbstractPatrollingNPC {
 
-    public Orc(Position pos) {
-        super("Orc", pos, Tile.ORC, Constants.ORC_MAX_HEALTH,
-                Constants.ORC_ARMOUR, Constants.ORC_MAX_DAMAGE, Faction.ORC);
+    public Guard(Position pos) {
+        super("Guard", pos, Tile.GUARD, Constants.GUARD_MAX_HEALTH,
+                Constants.GUARD_ARMOUR, Constants.GUARD_MAX_DAMAGE,
+                Faction.FRIENDLY);
     }
 }

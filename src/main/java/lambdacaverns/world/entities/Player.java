@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,12 +30,10 @@ import lambdacaverns.world.map.Tile;
  * Encapsulates the player entity.
  */
 public class Player extends AttackableEntity {
-    /** The current position of the player */
-    private Position position;
-    
+
     /** The maximum health of the player */
     private int maxHealth = Constants.PLAYER_STARTING_MAX_HEALTH;
-    
+
     /** The current number of gold coins carried by the player */
     private int gold = Constants.PLAYER_STARTING_GOLD;
 
@@ -44,19 +42,10 @@ public class Player extends AttackableEntity {
      * @param pos the starting position for the player.
      */
     public Player(Position pos) {
-        super(Constants.PLAYER_STARTING_MAX_HEALTH,
-                Constants.PLAYER_STARTING_ARMOUR_VALUE);
-        this.position = pos;
-    }
-    
-    @Override
-    public Position getPosition() {
-        return position;
-    }
-    
-    @Override
-    public void setPosition(Position pos) {
-        this.position = pos;
+        super("You", Tile.PLAYER, pos,
+                Constants.PLAYER_STARTING_MAX_HEALTH,
+                Constants.PLAYER_STARTING_ARMOUR_VALUE,
+                Faction.FRIENDLY);
     }
 
     /**
@@ -72,7 +61,7 @@ public class Player extends AttackableEntity {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
-    
+
     /**
      * @return the gold
      */
@@ -87,16 +76,24 @@ public class Player extends AttackableEntity {
         this.gold = gold;
     }
 
-    @Override
-    public Tile getTile() {
-        return Tile.PLAYER;
-    }
-
+    /**
+     * Player tick is handled by playerTick(World, Action), so this
+     * doesn't do anything, however this is called each tick.
+     */
     @Override
     public void tick(World w) {
-        // Player tick is handled by playerTick(World, Action)
+
     }
-    
+
+    /**
+     * Player tick is different than NPE tick, as the player takes input in the
+     * for of actions.
+     * 
+     * The player can perform at most a single action per tick.
+     * 
+     * @param w         the current world
+     * @param action    an action to perform this tick
+     */
     public void playerTick(World w, Actions action) {
         int row = getPosition().row();
         int col = getPosition().col();
@@ -120,7 +117,7 @@ public class Player extends AttackableEntity {
             w.getMessages().add("Unknown Key");
             return;
         }
-        
+
         if (w.isOpen(newPos)) {
             setPosition(newPos);
         } else {
@@ -134,11 +131,6 @@ public class Player extends AttackableEntity {
                 w.getMessages().add("Cannot move there");
             }
         }
-    }
-
-    @Override
-    public String getName() {
-        return "Player";
     }
 
     @Override

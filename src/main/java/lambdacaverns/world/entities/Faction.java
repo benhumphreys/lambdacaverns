@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014-2015  Ben Humphreys
+ * Copyright (C) 2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,17 +19,19 @@
  */
 package lambdacaverns.world.entities;
 
-import lambdacaverns.Constants;
-import lambdacaverns.common.Position;
-import lambdacaverns.world.map.Tile;
-
 /**
- * Encapsulates an NPC Orc
+ * Factions govern hostility between entities, both NPC & player.
  */
-public class Orc extends AbstractPatrollingNPC {
-
-    public Orc(Position pos) {
-        super("Orc", pos, Tile.ORC, Constants.ORC_MAX_HEALTH,
-                Constants.ORC_ARMOUR, Constants.ORC_MAX_DAMAGE, Faction.ORC);
+public enum Faction {
+    FRIENDLY,
+    ORC;
+    
+    /**
+     * Allows determination as to the hostility of two factions.
+     * @param other the faction to consider for hostility.
+     * @return      true if this faction "other" is hostile to "this" faction
+     */
+    public boolean isHostile(Faction other) {
+        return other != this;
     }
 }

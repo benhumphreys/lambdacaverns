@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ import java.util.Random;
 
 import lambdacaverns.Constants;
 import lambdacaverns.common.Position;
+import lambdacaverns.world.entities.Guard;
 import lambdacaverns.world.entities.Orc;
 import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.MapGen;
@@ -46,6 +47,7 @@ public class WorldGen {
         w.getPlayer().setPosition(pos);
         
         spawnOrcs(w, Constants.NPE_ORC_COUNT);
+        spawnGuards(w, Constants.NPE_GUARD_COUNT);
         return w;
     }
     
@@ -82,6 +84,16 @@ public class WorldGen {
     private static void spawnOrcs(World w, int n) {
         for (int i = 0; i < n; ++i) {
             w.addEntity(new Orc(findOpenPosition(w)));
+        }
+    }
+    
+    /**
+     * Spawn "n" Guards at random location in the world "w".
+     * @param w the world in which guards will be added.
+     */
+    private static void spawnGuards(World w, int n) {
+        for (int i = 0; i < n; ++i) {
+            w.addEntity(new Guard(findOpenPosition(w)));
         }
     }
 }

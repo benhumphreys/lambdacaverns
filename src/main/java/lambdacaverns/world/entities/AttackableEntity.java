@@ -19,19 +19,27 @@
  */
 package lambdacaverns.world.entities;
 
+import lambdacaverns.common.Position;
+import lambdacaverns.world.map.Tile;
+
 /**
  * An attackable entity base class
  * 
- * This abstract class provides the concepts of health and armour,
- * as is required to satisfy the IAttackable interface.
+ * This abstract class provides the concepts of health and armour, as is
+ * required to satisfy the IAttackable interface.
  */
-public abstract class AttackableEntity implements IEntity, IAttackable {
+public abstract class AttackableEntity extends AbstractEntity implements
+        IAttackable {
     private int health;
     private int armour;
+    private Faction faction;
 
-    public AttackableEntity(int initialHealth, int initialArmour) {
+    public AttackableEntity(String name, Tile tile, Position pos,
+            int initialHealth, int initialArmour, Faction faction) {
+        super(name, tile, pos);
         health = initialHealth;
         armour = initialArmour;
+        this.faction = faction;
     }
 
     @Override
@@ -39,23 +47,57 @@ public abstract class AttackableEntity implements IEntity, IAttackable {
         return health;
     }
 
+    /**
+     * Cause damage to this entity.
+     * The entities health will be reduced by "amount", however health will
+     * never be reduced below zero. The damage is applied directly, and does
+     * not take into account armour rating. This must be taken account of
+     * in external combat logic.
+     * 
+     * @throws IllegalArgumentException if the parameter "amount" is less
+     *                                  than zero
+     */
     @Override
     public void damage(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException();
+        }
         health = Math.max(0, health - amount);
     }
 
+    /**
+     * Heal this entity.
+     * The entities health will be increased by "amount", however will not
+     * increase health beyond Integer.MAX_VALUE so the healing applied can
+     * be less than "amount"
+     * 
+     * @throws IllegalArgumentException if the parameter "amount" is less
+     *                                  than zero
+     */
     @Override
     public void heal(int amount) {
-        health += amount;
+        if (amount < 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        if (Integer.MAX_VALUE - health <= amount) {
+            health = Integer.MAX_VALUE;
+        } else {
+            health += amount;
+        }
     }
-    
+
     @Override
     public int getArmour() {
         return armour;
     }
-    
+
     @Override
     public void setArmour(int armour) {
         this.armour = armour;
+    }
+
+    public Faction getFaction() {
+        return faction;
     }
 }

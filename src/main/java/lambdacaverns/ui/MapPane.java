@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,15 +19,13 @@
  */
 package lambdacaverns.ui;
 
-import java.util.Set;
-
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.ScreenCharacterStyle;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
-import lambdacaverns.world.entities.IEntity;
+import lambdacaverns.world.entities.AbstractEntity;
 import lambdacaverns.world.entities.Player;
 import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.Tile;
@@ -106,8 +104,7 @@ public class MapPane extends Pane {
 
         // Draw
         drawMap(mapTlcRow, mapTlcCol, m);
-        drawEntities(mapTlcRow, mapTlcCol, w.getEntities());
-        drawEntity(mapTlcRow, mapTlcCol, ply, true);
+        drawEntities(mapTlcRow, mapTlcCol, w);
     }
 
     // Draws the map tiles to the map pane
@@ -125,21 +122,21 @@ public class MapPane extends Pane {
 
     // Draw all non-player entities on to the map pane
     private void drawEntities(int mapTlcRow, int mapTlcCol,
-            Set<IEntity> entities) {
-        for (IEntity e : entities) {
+            World w) {
+        for (AbstractEntity e : w.getEntities()) {
             Position pos = e.getPosition();
 
             // Does the entity fall within the visible part of the map?
             if (pos.row() >= mapTlcRow && pos.row() < mapTlcRow + mapHeight
                     && pos.col() >= mapTlcCol
                     && pos.col() < mapTlcCol + mapWidth) {
-                drawEntity(mapTlcRow, mapTlcCol, e, false);
+                drawEntity(mapTlcRow, mapTlcCol, e, e == w.getPlayer());
             }
         }
     }
 
     // Draw a single entity on the map pane
-    private void drawEntity(int mapTlcRow, int mapTlcCol, IEntity e,
+    private void drawEntity(int mapTlcRow, int mapTlcCol, AbstractEntity e,
             boolean isPlayer) {
         Position pos = e.getPosition();
 

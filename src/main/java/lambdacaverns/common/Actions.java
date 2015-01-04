@@ -1,6 +1,6 @@
 /*
  * Caverns of Lambda - A Rogue-like
- * Copyright (C) 2014  Ben Humphreys
+ * Copyright (C) 2014-2015  Ben Humphreys
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,9 @@
  */
 package lambdacaverns.common;
 
+/**
+ * Actions that the player can perform
+ */
 public enum Actions {
     MOVE_UP,
     MOVE_DOWN,

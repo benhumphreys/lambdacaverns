@@ -30,7 +30,8 @@ public enum Tile {
     WALL('#', "Wall", Terminal.Color.WHITE),
     WATER('~', "Water", Terminal.Color.BLUE),
     TREE('^', "Tree", Terminal.Color.GREEN),
-    ORC('O', "Orc", Terminal.Color.RED);
+    ORC('O', "Orc", Terminal.Color.RED),
+    GUARD('G', "Guard", Terminal.Color.WHITE);
     
     private char glyph;
     private String label;
