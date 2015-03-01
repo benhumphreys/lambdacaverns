@@ -25,11 +25,12 @@ package lambdacaverns.world.entities;
 public enum Faction {
     FRIENDLY,
     ORC;
-    
+
     /**
      * Allows determination as to the hostility of two factions.
+     *
      * @param other the faction to consider for hostility.
-     * @return      true if this faction "other" is hostile to "this" faction
+     * @return true if this faction "other" is hostile to "this" faction
      */
     public boolean isHostile(Faction other) {
         return other != this;

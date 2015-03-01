@@ -19,18 +19,18 @@
  */
 package lambdacaverns.world.map;
 
+import lambdacaverns.common.Position;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import lambdacaverns.common.Position;
 
 /**
  * Encapsulates the map. This is just a matrix of Tile objects.
  */
 public class Map {
-    private List<Tile> data;
-    private int nrows;
-    private int ncols;
+    private final List<Tile> data;
+    private final int nrows;
+    private final int ncols;
 
     public Map(int nrows, int ncols) {
         // Pre-conditions
@@ -71,7 +71,7 @@ public class Map {
         checkPosition(row, col);
         return data.get((row * ncols) + col);
     }
-    
+
     /**
      * Returns the tile at the given position.
      */
@@ -86,19 +86,20 @@ public class Map {
         checkPosition(row, col);
         data.set(((row * ncols) + col), t);
     }
-    
+
     /**
      * Replaces the tile object at the specified position.
      */
     public void setTile(Position p, Tile t) {
         setTile(p.row(), p.col(), t);
     }
-    
+
     /**
      * Tests if a position is within the map bounds.
-     * @param pos   the position to test
-     * @return      true if the position given by "pos" is within the map
-     *              bounds, otherwise false
+     *
+     * @param pos the position to test
+     * @return true if the position given by "pos" is within the map
+     * bounds, otherwise false
      */
     public Boolean withinMap(Position pos) {
         return (pos.row() >= 0 && pos.row() < nrows

@@ -19,40 +19,40 @@
  */
 package lambdacaverns;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import com.googlecode.lanterna.terminal.*;
 import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.SwingTerminal;
-
+import lambdacaverns.common.Actions;
 import lambdacaverns.ui.UserInterface;
 import lambdacaverns.world.World;
 import lambdacaverns.world.WorldGen;
-import lambdacaverns.common.Actions;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Caverns of Lambda Application
  */
 public class App {
-    private Map<Character, Actions> actionMap = new HashMap<Character, Actions>();
-    
+    private final Map<Character, Actions> actionMap = new HashMap<Character, Actions>();
+
     public App() {
         initActionMap();
     }
-    
+
     private void initActionMap() {
         actionMap.put('u', Actions.MOVE_UP);
         actionMap.put('d', Actions.MOVE_DOWN);
         actionMap.put('l', Actions.MOVE_LEFT);
         actionMap.put('r', Actions.MOVE_RIGHT);
     }
-    
+
     /**
      * Displays a welcome page.
+     *
      * @param s the screen to write the welcome page too
      */
     private static void displayTitle(Screen s) {
@@ -77,14 +77,16 @@ public class App {
 
     /**
      * Creates a new/initialised/ready-to-play world object
+     *
      * @return the world!
      */
     private static World createWorld() {
         return WorldGen.generate(new Random(System.currentTimeMillis()));
     }
-    
+
     /**
      * Main game loop, exits when q/Q is pressed
+     *
      * @param w the world
      * @param s the screen to draw on
      */
@@ -97,7 +99,7 @@ public class App {
             Character c = Character.toLowerCase(k.getCharacter());
             if (c == 'q')
                 break;
-            
+
             Actions act = actionMap.get(c);
             if (act == null) {
                 continue;
@@ -109,6 +111,7 @@ public class App {
 
     /**
      * Blocks waiting on a keypress
+     *
      * @param s the Lanterna screen instance from which to read the key input
      * @return the key pressed.
      */
@@ -123,26 +126,27 @@ public class App {
         }
         return k;
     }
-    
+
     void run() {
         // Initialise
         Screen s = TerminalFacade.createScreen(new SwingTerminal(
                 Constants.SCREEN_NCOLS, Constants.SCREEN_NROWS));
         s.startScreen();
         displayTitle(s);
-        
+
         World w = createWorld();
         w.getMessages().add("Welcome to " + Constants.GAME_TITLE);
-        
+
         // Run
         gameLoop(w, s);
-        
+
         // Cleanup
         s.stopScreen();
     }
 
     /**
      * Main - It all starts here!
+     *
      * @param args command line arguments
      */
     public static void main(String[] args) {

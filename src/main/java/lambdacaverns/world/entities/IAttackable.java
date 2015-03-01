@@ -24,42 +24,47 @@ package lambdacaverns.world.entities;
  * entity that can participate in combat
  */
 public interface IAttackable {
-    
+
     /**
      * @return the current health of the entity
      */
     public int getHealth();
-    
+
     /**
      * The maximum damage per turn this entity can inflict on
      * another entity.
+     *
      * @return returns the maximum damage per turn
      */
     public int getDamagePerTurn();
-    
+
     /**
      * Do damage to an entity. That is, reduce the current health of the entity
      * by the specified amount.
-     * @param ammount the amount of damage to do
+     *
+     * @param amount the amount of damage to do
      */
     public void damage(int amount);
-    
+
     /**
      * Heal an entity. That is, increase the current health of the entity by
      * the specified amount.
+     *
      * @param amount the amount of healing to do
      */
     public void heal(int amount);
-    
+
     /**
      * Returns the current armour rating, a non-zero integer.
+     *
      * @return the current armour rating
      */
     public int getArmour();
-    
+
     /**
      * Sets the armour rating for this entity
-     * @param value the new armour rating value for the entity
+     *
+     * @param armour the new armour rating value for the entity
      * @throws IllegalArgumentException if the parameter "armour" is a
      *                                  negative value.
      */

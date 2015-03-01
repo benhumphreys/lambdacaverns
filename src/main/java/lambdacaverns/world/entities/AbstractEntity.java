@@ -36,42 +36,43 @@ public abstract class AbstractEntity {
     private final String name;
     private final Tile tile;
     private Position pos;
-    
+
     public AbstractEntity(String name, Tile tile, Position pos) {
         this.name = name;
         this.pos = pos;
         this.tile = tile;
     }
-    
+
     /**
-     * @return the name of the entity 
+     * @return the name of the entity
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * Sets the location of the entity to the position specified.
-     * @param pos   the new location for the entity.
+     *
+     * @param pos the new location for the entity.
      */
     public void setPosition(Position pos) {
         this.pos = pos;
     }
-    
+
     /**
      * @return the current location of the entity.
      */
     public Position getPosition() {
         return pos;
     }
-    
+
     /**
      * @return the tile type that represents this entity.
      */
     public Tile getTile() {
         return tile;
     }
-    
+
     /**
      * @param w the current state of the world
      */

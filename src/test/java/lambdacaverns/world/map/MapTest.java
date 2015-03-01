@@ -30,7 +30,7 @@ public class MapTest {
     private static final int NROWS = 1000;
     private static final int NCOLS = 1000;
     private static Tile EXPECTED_INITIAL_TILE = Tile.OPEN;
-    Map instance; 
+    private Map instance;
 
     @Before
     public void setUp() throws Exception {

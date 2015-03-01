@@ -24,7 +24,7 @@ import lambdacaverns.world.map.Tile;
 
 /**
  * An attackable entity base class
- * 
+ * <p/>
  * This abstract class provides the concepts of health and armour, as is
  * required to satisfy the IAttackable interface.
  */
@@ -32,10 +32,10 @@ public abstract class AttackableEntity extends AbstractEntity implements
         IAttackable {
     private int health;
     private int armour;
-    private Faction faction;
+    private final Faction faction;
 
     public AttackableEntity(String name, Tile tile, Position pos,
-            int initialHealth, int initialArmour, Faction faction) {
+                            int initialHealth, int initialArmour, Faction faction) {
         super(name, tile, pos);
         health = initialHealth;
         armour = initialArmour;
@@ -53,7 +53,7 @@ public abstract class AttackableEntity extends AbstractEntity implements
      * never be reduced below zero. The damage is applied directly, and does
      * not take into account armour rating. This must be taken account of
      * in external combat logic.
-     * 
+     *
      * @throws IllegalArgumentException if the parameter "amount" is less
      *                                  than zero
      */
@@ -70,7 +70,7 @@ public abstract class AttackableEntity extends AbstractEntity implements
      * The entities health will be increased by "amount", however will not
      * increase health beyond Integer.MAX_VALUE so the healing applied can
      * be less than "amount"
-     * 
+     *
      * @throws IllegalArgumentException if the parameter "amount" is less
      *                                  than zero
      */
@@ -79,7 +79,7 @@ public abstract class AttackableEntity extends AbstractEntity implements
         if (amount < 0) {
             throw new IllegalArgumentException();
         }
-        
+
         if (Integer.MAX_VALUE - health <= amount) {
             health = Integer.MAX_VALUE;
         } else {

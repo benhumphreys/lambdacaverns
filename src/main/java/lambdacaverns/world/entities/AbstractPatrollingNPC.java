@@ -31,19 +31,19 @@ import lambdacaverns.world.map.Tile;
  * enemies within attack range. It does not pursue enemies.
  */
 public class AbstractPatrollingNPC extends AttackableEntity {
-    final static int ATTACK_RANGE = 1; // TODO: Move this to config
-    final static int PATROL_RANGE = 5; // TODO: Move this to config
-    
+    private final static int ATTACK_RANGE = 1; // TODO: Move this to config
+    private final static int PATROL_RANGE = 5; // TODO: Move this to config
+
     private final PatrolLogic patrol;
     private final int damagePerTurn;
 
     public AbstractPatrollingNPC(String name,
-            Position pos,
-            Tile tile,
-            int initialHealth,
-            int initialArmour,
-            int damagePerTurn,
-            Faction faction) {
+                                 Position pos,
+                                 Tile tile,
+                                 int initialHealth,
+                                 int initialArmour,
+                                 int damagePerTurn,
+                                 Faction faction) {
         super(name, tile, pos, initialHealth, initialArmour, faction);
         this.damagePerTurn = damagePerTurn;
         patrol = new PatrolLogic(pos, PATROL_RANGE);
@@ -63,18 +63,18 @@ public class AbstractPatrollingNPC extends AttackableEntity {
     public int getDamagePerTurn() {
         return damagePerTurn;
     }
-    
+
     /**
      * Iterates over all entities, and returns the first enemy within "range"
      * steps. An enemy is defined by the faction system.
-     * 
+     *
      * @return an enemy within "range" steps, or null if none are within range
      */
     private AttackableEntity findTarget(World w, int range) {
         for (AbstractEntity e : w.getEntities()) {
             if (!(e instanceof AttackableEntity)) continue;
             AttackableEntity ae = (AttackableEntity) e;
-            
+
             if (getPosition().distanceTo(ae.getPosition()) <= range
                     && getFaction().isHostile(ae.getFaction())) {
                 return ae;

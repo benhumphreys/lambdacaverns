@@ -19,14 +19,14 @@
  */
 package lambdacaverns.world;
 
-import java.util.Random;
-
 import lambdacaverns.Constants;
 import lambdacaverns.common.Position;
 import lambdacaverns.world.entities.Guard;
 import lambdacaverns.world.entities.Orc;
 import lambdacaverns.world.map.Map;
 import lambdacaverns.world.map.MapGen;
+
+import java.util.Random;
 
 /**
  * Provides functionality to build a "World" object
@@ -36,35 +36,36 @@ public class WorldGen {
     /**
      * Generates a a world, initialised with a map, the players avatar
      * and an assortment of NPCs.
+     *
      * @return an initialised world.
      */
     public static World generate(Random rnd) {
         Map m = MapGen.generate(Constants.MAP_HEIGHT, Constants.MAP_WIDTH, rnd);
         World w = new World(m, rnd);
-        
+
         // Find an open map position for the player to start
         Position pos = findOpenPosition(w);
         w.getPlayer().setPosition(pos);
-        
+
         spawnOrcs(w, Constants.NPE_ORC_COUNT);
         spawnGuards(w, Constants.NPE_GUARD_COUNT);
         return w;
     }
-    
+
     /**
      * Find a random open position on the map.
-     * 
+     * <p/>
      * This method will return a random open position on the map. The
      * map tile will be of type "OPEN" and no "entity" will be present
      * at that location.
-     * 
+     *
      * @param w the world in which to find an open position.
      * @return the position of the open tile
      */
     private static Position findOpenPosition(World w) {
         Map m = w.getMap();
         Random rng = w.getRandom();
-        Position pos = null;
+        Position pos;
         while (true) {
             int row = rng.nextInt(m.nrows());
             int col = rng.nextInt(m.ncols());
@@ -73,12 +74,13 @@ public class WorldGen {
                 break;
             }
         }
-        
+
         return pos;
     }
 
     /**
      * Spawn "n" Orcs at random location in the world "w".
+     *
      * @param w the world in which orcs will be added.
      */
     private static void spawnOrcs(World w, int n) {
@@ -86,9 +88,10 @@ public class WorldGen {
             w.addEntity(new Orc(findOpenPosition(w)));
         }
     }
-    
+
     /**
      * Spawn "n" Guards at random location in the world "w".
+     *
      * @param w the world in which guards will be added.
      */
     private static void spawnGuards(World w, int n) {

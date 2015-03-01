@@ -28,14 +28,15 @@ import java.util.List;
  */
 public class Messages {
     private int maxMessages;
-    private LinkedList<String> text;
-    
+    private final LinkedList<String> text;
+
     /**
      * Constructor
-     * @param maxMessages   since there is only limited real estate on the
-     *                      SCREEN for displaying messages, this provides a way
-     *                      for the world to forget old messages that can no
-     *                      longer be displayed.
+     *
+     * @param maxMessages since there is only limited real estate on the
+     *                    SCREEN for displaying messages, this provides a way
+     *                    for the world to forget old messages that can no
+     *                    longer be displayed.
      */
     public Messages(int maxMessages) {
         this.maxMessages = maxMessages;
@@ -48,12 +49,12 @@ public class Messages {
      */
     public void add(String msg) {
         assert msg != null;
-        if (text.size()  >= maxMessages) {
+        if (text.size() >= maxMessages) {
             text.removeFirst();
         }
         text.addLast(msg);
     }
-    
+
     /**
      * @return a clone of the messages.
      */

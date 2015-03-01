@@ -31,14 +31,19 @@ import lambdacaverns.world.map.Tile;
  */
 public class Player extends AttackableEntity {
 
-    /** The maximum health of the player */
+    /**
+     * The maximum health of the player
+     */
     private int maxHealth = Constants.PLAYER_STARTING_MAX_HEALTH;
 
-    /** The current number of gold coins carried by the player */
+    /**
+     * The current number of gold coins carried by the player
+     */
     private int gold = Constants.PLAYER_STARTING_GOLD;
 
-    /** Constructor
-     * 
+    /**
+     * Constructor
+     *
      * @param pos the starting position for the player.
      */
     public Player(Position pos) {
@@ -88,34 +93,34 @@ public class Player extends AttackableEntity {
     /**
      * Player tick is different than NPE tick, as the player takes input in the
      * for of actions.
-     * 
+     * <p/>
      * The player can perform at most a single action per tick.
-     * 
-     * @param w         the current world
-     * @param action    an action to perform this tick
+     *
+     * @param w      the current world
+     * @param action an action to perform this tick
      */
     public void playerTick(World w, Actions action) {
         int row = getPosition().row();
         int col = getPosition().col();
 
-        Position newPos = null;
+        Position newPos;
 
         switch (action) {
-        case MOVE_UP:
-            newPos = new Position(row - 1, col);
-            break;
-        case MOVE_DOWN:
-            newPos = new Position(row + 1, col);
-            break;
-        case MOVE_LEFT:
-            newPos = new Position(row, col - 1);
-            break;
-        case MOVE_RIGHT:
-            newPos = new Position(row, col + 1);
-            break;
-        default:
-            w.getMessages().add("Unknown Key");
-            return;
+            case MOVE_UP:
+                newPos = new Position(row - 1, col);
+                break;
+            case MOVE_DOWN:
+                newPos = new Position(row + 1, col);
+                break;
+            case MOVE_LEFT:
+                newPos = new Position(row, col - 1);
+                break;
+            case MOVE_RIGHT:
+                newPos = new Position(row, col + 1);
+                break;
+            default:
+                w.getMessages().add("Unknown Key");
+                return;
         }
 
         if (w.isOpen(newPos)) {

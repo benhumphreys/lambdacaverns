@@ -21,7 +21,6 @@ package lambdacaverns.ui;
 
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.Terminal;
-
 import lambdacaverns.Constants;
 import lambdacaverns.common.Position;
 import lambdacaverns.world.World;

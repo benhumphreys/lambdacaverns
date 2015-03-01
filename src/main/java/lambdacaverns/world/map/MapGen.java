@@ -27,16 +27,17 @@ import java.util.Random;
  * http://roguebasin.roguelikedevelopment.org/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
  */
 public class MapGen {
-    
+
     /**
      * Randomly generate a map.
+     *
      * @param nrows height of the map to be generated
      * @param ncols width of the map to be generated.
      */
     public static Map generate(int nrows, int ncols, Random rnd) {
         Map m = new Map(nrows, ncols);
         randomise(m, rnd);
-        
+
         final int iterations = 5;
         for (int i = 0; i < iterations; i++) {
             if (i < iterations - 1) {
@@ -45,10 +46,10 @@ public class MapGen {
                 smooth(m, false);
             }
         }
-        
+
         return m;
     }
-    
+
     /**
      * Randomise the map uses a probability of 45% that a given tile
      * will be a wall.
@@ -56,54 +57,56 @@ public class MapGen {
     private static void randomise(Map m, Random rnd) {
         final double PROBABILITY_WALL = 0.45;
         Tile wall = Tile.WALL;
-        
+
         for (int row = 0; row < m.nrows(); row++) {
             for (int col = 0; col < m.ncols(); col++) {
                 if (rnd.nextDouble() < PROBABILITY_WALL) {
-                    m.setTile(row,  col, wall);
+                    m.setTile(row, col, wall);
                 }
             }
         }
     }
-    
+
     /**
-     * Smooth the map
-     * @param m
-     * @param fillEmpty
+     * Perform a single iteration of map smoothing
+     *
+     * @param m         the map to smooth
+     * @param fillEmpty if all the neighbouring cells of a given map position
+     *                  are empty, place a wall at the position.
      */
     private static void smooth(Map m, boolean fillEmpty) {
         Tile wall = Tile.WALL;
         Tile open = Tile.OPEN;
-        
+
         final int nrows = m.nrows();
         final int ncols = m.ncols();
-        
+
         for (int row = 0; row < nrows; row++) {
             for (int col = 0; col < ncols; col++) {
-               int wallcount = 0;
-               
-               // Count the numbers of wall tiles surrounding the tile at
-               // position row/col. Any tiles outside the bounds of the map
-               // are counted as walls. This ensures more 'wall' at the map
-               // edges.
-               for (int i = row - 1; i <= row + 1; i++) {
-                   for (int j = col - 1; j <= col + 1; j++ ) {
-                       if (i < 0 || j < 0 || i >= nrows || j >= ncols) {
-                           wallcount++;
-                       } else {
-                           if (m.getTile(i, j) == Tile.WALL) {
-                               wallcount++;
-                           }
-                       }
-                   }
-               }
-               
-               // Apply smoothing using cellular automata approach.
-               if (wallcount > 4 || (fillEmpty && wallcount == 0)) {
-                   m.setTile(row,  col, wall);
-               } else {
-                   m.setTile(row,  col, open);
-               }
+                int wallcount = 0;
+
+                // Count the numbers of wall tiles surrounding the tile at
+                // position row/col. Any tiles outside the bounds of the map
+                // are counted as walls. This ensures more 'wall' at the map
+                // edges.
+                for (int i = row - 1; i <= row + 1; i++) {
+                    for (int j = col - 1; j <= col + 1; j++) {
+                        if (i < 0 || j < 0 || i >= nrows || j >= ncols) {
+                            wallcount++;
+                        } else {
+                            if (m.getTile(i, j) == Tile.WALL) {
+                                wallcount++;
+                            }
+                        }
+                    }
+                }
+
+                // Apply smoothing using cellular automata approach.
+                if (wallcount > 4 || (fillEmpty && wallcount == 0)) {
+                    m.setTile(row, col, wall);
+                } else {
+                    m.setTile(row, col, open);
+                }
             }
         }
     }

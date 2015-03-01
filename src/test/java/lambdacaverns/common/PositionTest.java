@@ -26,12 +26,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PositionTest {
-    Position p0 = new Position(0,0);
-    Position p1 = new Position(0,0);
-    Position p2 = new Position(1,0);
-    Position p3 = new Position(0,1);
-    Position p4 = new Position(1,1);
-    Position p5 = new Position(1,9);
+    private Position p0 = new Position(0,0);
+    private Position p1 = new Position(0,0);
+    private Position p2 = new Position(1,0);
+    private Position p3 = new Position(0,1);
+    private Position p4 = new Position(1,1);
+    private Position p5 = new Position(1,9);
 
     @Before
     public void setUp() throws Exception {

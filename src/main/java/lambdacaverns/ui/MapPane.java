@@ -22,7 +22,6 @@ package lambdacaverns.ui;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.ScreenCharacterStyle;
 import com.googlecode.lanterna.terminal.Terminal;
-
 import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
 import lambdacaverns.world.entities.AbstractEntity;
@@ -38,10 +37,10 @@ public class MapPane extends Pane {
     private int firstScreenCol;
 
     // Width of the map area (i.e. pane width minus borders)
-    private int mapWidth;
+    private final int mapWidth;
 
     // Height of the map area (i.e. pane height minus borders)
-    private int mapHeight;
+    private final int mapHeight;
 
     public MapPane(Screen s, int height, int width, Position corner) {
         super(s, height, width, corner);
@@ -59,7 +58,7 @@ public class MapPane extends Pane {
     }
 
     private void drawBorders() {
-        StringBuffer hline = new StringBuffer();
+        StringBuilder hline = new StringBuilder();
         hline.append("+");
         for (int i = 0; i < width() - 2; ++i) {
             hline.append("-");
@@ -122,7 +121,7 @@ public class MapPane extends Pane {
 
     // Draw all non-player entities on to the map pane
     private void drawEntities(int mapTlcRow, int mapTlcCol,
-            World w) {
+                              World w) {
         for (AbstractEntity e : w.getEntities()) {
             Position pos = e.getPosition();
 
@@ -137,7 +136,7 @@ public class MapPane extends Pane {
 
     // Draw a single entity on the map pane
     private void drawEntity(int mapTlcRow, int mapTlcCol, AbstractEntity e,
-            boolean isPlayer) {
+                            boolean isPlayer) {
         Position pos = e.getPosition();
 
         // Calculate draw position

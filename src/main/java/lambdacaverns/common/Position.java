@@ -25,55 +25,56 @@ package lambdacaverns.common;
 public class Position {
     private final int _row;
     private final int _col;
-    
+
     public Position(int row, int col) {
         _row = row;
         _col = col;
     }
-    
+
     /**
      * @return the row
      */
     public int row() {
         return _row;
     }
-    
+
     /**
      * @return the column
      */
     public int col() {
         return _col;
     }
-    
+
     /**
      * Returns the distance between this position and another.
+     *
      * @param other the other position to calculate the distance to
      * @return the distance between "this" position and the "other" position
      */
     public int distanceTo(Position other) {
         if (this.equals(other)) return 0;
-        
+
         int diffrow = Math.abs(row() - other.row());
         int diffcol = Math.abs(col() - other.col());
-        return (int)Math.floor(Math.sqrt((diffrow * diffrow) + (diffcol * diffcol)));
+        return (int) Math.floor(Math.sqrt((diffrow * diffrow) + (diffcol * diffcol)));
     }
-    
+
     /**
      * Positions are equal if they have the same row and column
      */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Position)) return false;
-        Position other = (Position)o;
+        Position other = (Position) o;
         return _row == other._row && _col == other._col;
     }
-    
+
     @Override
     public int hashCode() {
         return _row + (31 * _col);
     }
-    
-    @Override 
+
+    @Override
     public String toString() {
         return "(" + row() + ", " + col() + ")";
     }

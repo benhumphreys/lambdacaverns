@@ -31,36 +31,36 @@ public class CombatLogic {
     /**
      * Calculate and carry out combat action between two entities, the
      * attacker and the defender.
-     * <p>
+     * <p/>
      * Pre-conditions:
      * <ul>
      * <li> The attacker is alive (health > 0)
      * <li> The defender is alive (health > 0)
      * </ul>
-     * 
+     * <p/>
      * Post-conditions:
      * <ul>
      * <li> Any damage calculated is applied to the defender
      * <li> If the player was involved, a message is printed describing
-     *      the attack
+     * the attack
      * </ul>
-     * 
-     * @param w         the current world
+     *
+     * @param w        the current world
      * @param attacker the entity that is attacking
      * @param defender the entity that is the subject of the attack
      */
     public static void combat(World w, AttackableEntity attacker,
                               AttackableEntity defender) {
-        
+
         // Determine the maximum damage the attacker can do to the
         // defender
         int dmg = Math.max(0,
                 attacker.getDamagePerTurn() - defender.getArmour());
         dmg = Math.min(dmg, defender.getHealth());
-        
+
         // Randomise between 0 and max damage
         dmg = w.getRandom().nextInt(dmg + 1);
-        
+
         // Apply the damage
         defender.damage(dmg);
 
@@ -68,8 +68,8 @@ public class CombatLogic {
         Messages msg = w.getMessages();
         if (attacker == w.getPlayer()) {
             if (dmg > 0) {
-            msg.add("You hit an " + defender.getName() + " for " + dmg
-                    + " damage");
+                msg.add("You hit an " + defender.getName() + " for " + dmg
+                        + " damage");
             } else {
                 msg.add("You swing at an " + defender.getName() + " and miss");
             }
@@ -78,8 +78,8 @@ public class CombatLogic {
             }
         } else if (defender == w.getPlayer()) {
             if (dmg > 0) {
-            msg.add("An " + attacker.getName() + " hits you for " + dmg
-                    + " damage");
+                msg.add("An " + attacker.getName() + " hits you for " + dmg
+                        + " damage");
             } else {
                 msg.add("An " + attacker.getName() + " swings at you and misses");
             }

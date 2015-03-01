@@ -32,27 +32,27 @@ public enum Tile {
     TREE('^', "Tree", Terminal.Color.GREEN),
     ORC('O', "Orc", Terminal.Color.RED),
     GUARD('G', "Guard", Terminal.Color.WHITE);
-    
-    private char glyph;
-    private String label;
-    private Terminal.Color colour;
-    private boolean bold;
-    
+
+    private final char glyph;
+    private final String label;
+    private final Terminal.Color colour;
+    private final boolean bold;
+
     private Tile(char glyph, String label, Terminal.Color colour, boolean bold) {
         this.glyph = glyph;
         this.label = label;
         this.colour = colour;
         this.bold = bold;
     }
-    
+
     private Tile(char glyph, String label, Terminal.Color colour) {
         this(glyph, label, colour, false);
     }
-    
+
     public char getGlyph() {
         return glyph;
     }
-    
+
     public String getLabel() {
         return label;
     }
@@ -60,7 +60,7 @@ public enum Tile {
     public Terminal.Color getColour() {
         return colour;
     }
-    
+
     public boolean getBold() {
         return bold;
     }

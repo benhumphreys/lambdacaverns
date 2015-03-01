@@ -19,11 +19,11 @@
  */
 package lambdacaverns.logic;
 
-import java.util.Random;
-
 import lambdacaverns.common.Position;
 import lambdacaverns.world.World;
 import lambdacaverns.world.map.Map;
+
+import java.util.Random;
 
 /**
  * Encapsulates the logic for a patrolling non-player character.
@@ -34,7 +34,7 @@ import lambdacaverns.world.map.Map;
 public class PatrolLogic {
     private final Position home;
     private final int patrolDistance;
-    
+
     /**
      * Builds an instance that has no home and as such is a wanderer
      * without a specific patrol area.
@@ -47,22 +47,22 @@ public class PatrolLogic {
     /**
      * Builds an instance with a specific home and patrol distance, thus
      * designating the patrol area.
-     * 
-     * @param home the centre point of the patrol area
+     *
+     * @param home           the centre point of the patrol area
      * @param patrolDistance the radius of the patrol area
      */
     public PatrolLogic(Position home, int patrolDistance) {
         this.home = home;
         this.patrolDistance = patrolDistance;
     }
-    
+
     /**
      * Calculates the suggested next position for the NPC.
      * This method does not mutate the world, indeed it simply suggests
      * the next move for an NPC to make. It is up to the caller to actually
      * carry out the move.
-     * 
-     * @param w current state of the world
+     *
+     * @param w       current state of the world
      * @param current the current position of the NPC
      * @return the suggested next position
      */
@@ -78,13 +78,13 @@ public class PatrolLogic {
         if (!m.withinMap(newpos) || !w.isOpen(newpos)) {
             return current;
         }
-        
+
         // If the new position takes the entity outside of its patrol radius
         // don't take the step.
         if (home != null && newpos.distanceTo(home) >= patrolDistance) {
             return current;
         }
-        
+
         return newpos;
     }
 }
