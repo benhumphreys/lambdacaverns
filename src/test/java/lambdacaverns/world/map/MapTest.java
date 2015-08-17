@@ -19,17 +19,17 @@
  */
 package lambdacaverns.world.map;
 
-import static org.junit.Assert.*;
 import lambdacaverns.common.Position;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 public class MapTest {
     private static final int NROWS = 1000;
     private static final int NCOLS = 1000;
-    private static Tile EXPECTED_INITIAL_TILE = Tile.OPEN;
+    private static final Tile EXPECTED_INITIAL_TILE = Tile.OPEN;
     private Map instance;
 
     @Before

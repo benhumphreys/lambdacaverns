@@ -37,7 +37,7 @@ import java.util.Random;
  * Caverns of Lambda Application
  */
 public class App {
-    private final Map<Character, Actions> actionMap = new HashMap<Character, Actions>();
+    private final Map<Character, Actions> actionMap = new HashMap<>();
 
     public App() {
         initActionMap();
@@ -122,12 +122,13 @@ public class App {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
+                return null;
             }
         }
         return k;
     }
 
-    void run() {
+    private void run() {
         // Initialise
         Screen s = TerminalFacade.createScreen(new SwingTerminal(
                 Constants.SCREEN_NCOLS, Constants.SCREEN_NROWS));

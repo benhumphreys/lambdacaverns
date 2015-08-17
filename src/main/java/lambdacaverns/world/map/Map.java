@@ -41,7 +41,7 @@ public class Map {
         this.ncols = ncols;
 
         // Initialise data vector
-        data = new ArrayList<Tile>(nrows * ncols);
+        data = new ArrayList<>(nrows * ncols);
         for (int i = 0; i < nrows * ncols; ++i) {
             data.add(Tile.OPEN);
         }

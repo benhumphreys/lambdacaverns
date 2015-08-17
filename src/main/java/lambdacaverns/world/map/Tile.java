@@ -38,14 +38,14 @@ public enum Tile {
     private final Terminal.Color colour;
     private final boolean bold;
 
-    private Tile(char glyph, String label, Terminal.Color colour, boolean bold) {
+    Tile(char glyph, String label, Terminal.Color colour, boolean bold) {
         this.glyph = glyph;
         this.label = label;
         this.colour = colour;
         this.bold = bold;
     }
 
-    private Tile(char glyph, String label, Terminal.Color colour) {
+    Tile(char glyph, String label, Terminal.Color colour) {
         this(glyph, label, colour, false);
     }
 

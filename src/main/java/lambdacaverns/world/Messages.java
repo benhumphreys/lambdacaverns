@@ -27,7 +27,7 @@ import java.util.List;
  * displayed on the screen for the player.
  */
 public class Messages {
-    private int maxMessages;
+    private final int maxMessages;
     private final LinkedList<String> text;
 
     /**
@@ -40,7 +40,7 @@ public class Messages {
      */
     public Messages(int maxMessages) {
         this.maxMessages = maxMessages;
-        this.text = new LinkedList<String>();
+        this.text = new LinkedList<>();
     }
 
     /**

@@ -79,7 +79,7 @@ public class TextPane extends Pane {
         assert maxLen > 0;
         assert maxHeight > 0;
 
-        List<String> v = new ArrayList<String>();
+        List<String> v = new ArrayList<>();
         for (String s : lst) {
             if (s.length() < maxLen) {
                 v.add(s);
@@ -111,7 +111,7 @@ public class TextPane extends Pane {
      */
     static private List<String> wrapString(String s, int maxLen) {
         s = s.trim();
-        List<String> v = new ArrayList<String>();
+        List<String> v = new ArrayList<>();
         int beginIndex = 0;
         while (beginIndex < s.length()) {
             int subStrLen = Math.min(maxLen, s.length() - beginIndex);

@@ -51,7 +51,7 @@ public class World {
      * @param rnd source of randomness for the world
      */
     World(Map map, Random rnd) {
-        entities = new HashSet<AbstractEntity>();
+        entities = new HashSet<>();
         messages = new Messages(Constants.TEXTAREA_HEIGHT);
         player = new Player(new Position(0, 0));
         addEntity(player);

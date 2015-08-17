@@ -28,7 +28,7 @@ public interface IAttackable {
     /**
      * @return the current health of the entity
      */
-    public int getHealth();
+    int getHealth();
 
     /**
      * The maximum damage per turn this entity can inflict on
@@ -36,7 +36,7 @@ public interface IAttackable {
      *
      * @return returns the maximum damage per turn
      */
-    public int getDamagePerTurn();
+    int getDamagePerTurn();
 
     /**
      * Do damage to an entity. That is, reduce the current health of the entity
@@ -44,7 +44,7 @@ public interface IAttackable {
      *
      * @param amount the amount of damage to do
      */
-    public void damage(int amount);
+    void damage(int amount);
 
     /**
      * Heal an entity. That is, increase the current health of the entity by
@@ -52,14 +52,14 @@ public interface IAttackable {
      *
      * @param amount the amount of healing to do
      */
-    public void heal(int amount);
+    void heal(int amount);
 
     /**
      * Returns the current armour rating, a non-zero integer.
      *
      * @return the current armour rating
      */
-    public int getArmour();
+    int getArmour();
 
     /**
      * Sets the armour rating for this entity
@@ -68,5 +68,5 @@ public interface IAttackable {
      * @throws IllegalArgumentException if the parameter "armour" is a
      *                                  negative value.
      */
-    public void setArmour(int armour);
+    void setArmour(int armour);
 }

@@ -33,8 +33,8 @@ import lambdacaverns.world.map.Tile;
  * The screen pane that displays the Map.
  */
 public class MapPane extends Pane {
-    private int firstScreenRow;
-    private int firstScreenCol;
+    private final int firstScreenRow;
+    private final int firstScreenCol;
 
     // Width of the map area (i.e. pane width minus borders)
     private final int mapWidth;

@@ -19,20 +19,20 @@
  */
 package lambdacaverns.world;
 
-import static org.junit.Assert.*;
-
-import java.util.Random;
-
 import lambdacaverns.common.Actions;
 import lambdacaverns.common.Position;
-import lambdacaverns.world.map.Map;
-import lambdacaverns.world.map.Tile;
 import lambdacaverns.world.entities.AbstractEntity;
 import lambdacaverns.world.entities.IAttackable;
-
+import lambdacaverns.world.map.Map;
+import lambdacaverns.world.map.Tile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class WorldTest {
     /** Class under test */
